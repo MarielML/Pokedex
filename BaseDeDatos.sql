@@ -1,0 +1,16 @@
+CREATE DATABASE IF NOT EXISTS Pokedex;
+
+CREATE TABLE pokemons (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    numero INT NOT NULL UNIQUE,
+    nombre VARCHAR(255) NOT NULL,
+    tipo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    imagen VARCHAR(255)
+);
+
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
