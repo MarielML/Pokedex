@@ -39,9 +39,9 @@ session_start();
                 }
                 $stmt->close();
             }
-            $conexion->close();
+           // $conexion->close();
             ?>
-            <!-- <a href="login.php" class="w3-button w3-green">Iniciar sesión</a> -->
+    
 
         <?php endif; ?>
     </nav>
