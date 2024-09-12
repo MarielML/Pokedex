@@ -20,6 +20,12 @@
     ?>
     <?php foreach ($pokemons as $pokemon): ?>
         <div class="pokemon">
+            <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
+                <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>">
+            </a>
+            <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
+                <img src="<?php echo htmlspecialchars($pokemon['tipo']); ?>">
+            </a>
             <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>"><?php echo htmlspecialchars($pokemon['nombre']); ?>
             </a>
         </div>

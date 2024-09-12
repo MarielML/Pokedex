@@ -18,12 +18,13 @@
     $resultado = $stmt->get_result();
     $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
     ?>
-    <?php foreach ($pokemons as $pokemon): ?>
-        <h1><?= htmlspecialchars($pokemon['nombre']); ?></h1>
-        <p><?= htmlspecialchars($pokemon['descripcion']); ?></p>
-    <?php endforeach; ?>
-
-
+    <section>
+        <?php foreach ($pokemons as $pokemon): ?>
+            <h1><?= htmlspecialchars($pokemon['nombre']); ?></h1>
+            <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>">
+            <p><?= htmlspecialchars($pokemon['descripcion']); ?></p>
+        <?php endforeach; ?>
+    </section>
 
     <section class="volver">
         <a href="index.php">Volver</a>

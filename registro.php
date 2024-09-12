@@ -17,16 +17,25 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
 <body>
     <h1>Registrarse</h1>
     <form method="post">
-        <label for="username">Nombre de usuario:</label>
+        <label for="usuario">Nombre de usuario:</label>
         <input type="text" id="usuario" name="usuario" required><br><br>
-        <label for="password">Contraseña:</label>
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <label for="clave">Contraseña:</label>
         <input type="password" id="clave" name="clave" required><br><br>
+        <label for="rep-clave">Repetir Contraseña:</label>
+        <input type="password" id="rep-clave" name="rep-clave" required><br><br>
         <button type="submit" class="w3-button w3-blue">Registrarse</button><br><br>
     </form>
     <?php
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nombreUsuario = $_POST['usuario'];
+        $nombre = $_POST['nombre'];
         $clave = $_POST['clave'];
+        $email = $_POST['email'];
+        $repClave = $_POST['rep-clave'];
 
         $stmt = $conexion->prepare("SELECT * FROM usuario WHERE usuario = ?");
         $stmt->bind_param("s", $nombreUsuario);
@@ -34,16 +43,28 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
         $resultado = $stmt->get_result();
 
         if ($resultado->num_rows > 0) {
-            echo "El nombre de usuario ya está en uso.";
+            echo "<p class='w3-text-red'>El nombre de usuario ya está en uso.</p>";
         } else {
-            $hashed_password = password_hash($clave, PASSWORD_DEFAULT);
-
-            $stmt = $conexion->prepare("INSERT INTO usuario (usuario, password) VALUES (?, ?)");
-            $stmt->bind_param("ss", $nombreUsuario, $hashed_password);
-            if ($stmt->execute()) {
-                echo "Registro exitoso.";
+            $stmt = $conexion->prepare("SELECT * FROM usuario WHERE email = ?");
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            if ($resultado->num_rows > 0) {
+                echo "<p class='w3-text-red'>El email ya está en uso</p>";
             } else {
-                echo "Error: " . $stmt->error;
+                if ($clave === $repClave) {
+                    $hashed_password = password_hash($clave, PASSWORD_DEFAULT);
+
+                    $stmt = $conexion->prepare("INSERT INTO usuario (usuario, nombre, password, email) VALUES (?, ?, ?, ?)");
+                    $stmt->bind_param("ssss", $nombreUsuario, $nombre, $hashed_password, $email);
+                    if ($stmt->execute()) {
+                        echo "<p>Registro exitoso</p>";
+                    } else {
+                        echo "Error: " . $stmt->error;
+                    }
+                } else {
+                   echo "<p class='w3-text-red'>Las contraseñas no son iguales<p>";
+                }
             }
         }
     }
