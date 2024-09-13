@@ -14,19 +14,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
     <link rel="stylesheet" href="./css/estilos.css">
 </head>
 
-<body>
+<body class="registro">
     <h1>Registrarse</h1>
     <form method="post">
-        <label for="usuario">Nombre de usuario:</label>
-        <input type="text" id="usuario" name="usuario" required><br><br>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required><br><br>
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="clave">Contraseña:</label>
-        <input type="password" id="clave" name="clave" required><br><br>
-        <label for="rep-clave">Repetir Contraseña:</label>
-        <input type="password" id="rep-clave" name="rep-clave" required><br><br>
+        <input type="text" id="usuario" name="usuario" required placeholder="Nombre de usuario"><br><br>
+        <input type="text" id="nombre" name="nombre" required placeholder="Nombre"><br><br>
+        <input type="email" id="email" name="email" required placeholder="email"><br><br>
+        <input type="password" id="clave" name="clave" required placeholder="contraseña"><br><br>
+        <input type="password" id="rep-clave" name="rep-clave" required placeholder="Repetir Contraseña"><br><br>
         <button type="submit" class="w3-button w3-blue">Registrarse</button><br><br>
     </form>
     <?php
@@ -63,7 +58,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
                         echo "Error: " . $stmt->error;
                     }
                 } else {
-                   echo "<p class='w3-text-red'>Las contraseñas no son iguales<p>";
+                    echo "<p class='w3-text-red'>Las contraseñas no son iguales<p>";
                 }
             }
         }

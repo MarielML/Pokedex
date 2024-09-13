@@ -1,5 +1,45 @@
 body {
-  margin: 0;
+  font-family: "Indie Flower", cursive;
+}
+
+header input {
+  width: 150px;
+}
+
+header input,
+header button,
+header a {
+  font-size: 1.5rem;
+}
+
+.cerrarSesion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cerrarSesion p {
+  font-size: 2rem;
+}
+
+.cerrarSesion button {
+  margin: 0 1rem;
+  font-size: 1.5rem;
+}
+
+.buscador {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+.buscador input {
+  width: 70%;
+  margin: 0 1rem;
 }
 
 header {
@@ -12,13 +52,50 @@ header nav {
   align-items: center;
 }
 
-.login-form {
-  display: flex;
-  gap: 10px;
+table {
+  width: 80%;
+  margin: 3rem auto;
+  border: 1px solid #000000;
+  font-size: 2rem;
 }
 
-.login-form input {
-  padding: 5px;
-  border-radius: 3px;
+table img {
   width: 100px;
+}
+
+table th {
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+table td {
+  text-align: center;
+  border: 1px solid #000000;
+}
+
+table thead {
+  width: 100%;
+}
+
+.acciones {
+  display: flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+.agregar {
+  width: 50%;
+  margin: 1rem auto;
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.registro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }

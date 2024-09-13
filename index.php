@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <title>Pokedex</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="./css/estilos.css">
 </head>
 
-<body>
+<body class="bg-gray-100 p-8">
     <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
     include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
@@ -18,30 +20,79 @@
     $resultado = $stmt->get_result();
     $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
     ?>
-    <?php foreach ($pokemons as $pokemon): ?>
-        <div class="pokemon">
-            <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>">
-            </a>
-            <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                <img src="<?php echo htmlspecialchars($pokemon['tipo']); ?>">
-            </a>
-            <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>"><?php echo htmlspecialchars($pokemon['nombre']); ?>
-            </a>
-        </div>
+
+    <table class="w-full border-collapse border border-gray-400">
+        <thead>
+            <tr>
+                <th>
+                    Imagen
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Número
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <?php if (isset($_SESSION['logueado'])): ?>
+                    <th>
+                        Acciones
+                    </th>
+                <?php endif; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($pokemons as $pokemon): ?>
+                <tr>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
+                            <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>" alt="imagen">
+                        </a>
+                    </td>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
+                            <img src="<?php echo htmlspecialchars($pokemon['tipo']); ?>" alt="tipo">
+                        </a>
+                    </td>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>"><?php echo htmlspecialchars($pokemon['numero']); ?>
+                        </a>
+                    </td>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>"><?php echo htmlspecialchars($pokemon['nombre']); ?>
+                        </a>
+                    </td>
+                    <?php if (isset($_SESSION['logueado'])): ?>
+                        <div class="acciones">
+                            <td>
+                                <a><button>Modificación</button></a>
+                                <a><button>Baja</button></a>
+                            </td>
+                        </div>
+
+                    <?php endif; ?>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+
+    </table>
+
+    <div class="agregar">
         <?php
         if (isset($_SESSION['logueado'])) {
-            echo "<a><button>Modificar</button></a>";
+            echo "<a><button>Agregar pokemon</button></a>";
         }
         ?>
-    <?php endforeach; ?>
+    </div>
+
     <?php
-    if (isset($_SESSION['logueado'])) {
-        echo "<div><a><button>Agregar pokemon</button></a></div>";
-    }
     $stmt->close();
     $conexion->close();
     ?>
+
+
 
 </body>
 
