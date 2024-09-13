@@ -19,7 +19,7 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
 
 <body class="form-agregar">
     <h1>Agregar Pokemon</h1>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <input type="number" id="numero" name="numero" required placeholder="Número"><br><br>
         <input type="text" id="nombre" name="nombre" required placeholder="Nombre"><br><br>
         <label for="tipo">Tipo:</label><br><br>
@@ -46,7 +46,7 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
         </select><br><br>
 
         <label for="descripcion">Descripción:</label><br><br>
-        <textarea id="descripcion" name="descripcion" rows="5" cols="33"></textarea><br><br>
+        <textarea id="descripcion" name="descripcion" rows="5" cols="33" required></textarea><br><br>
 
         <label for="imagen">Imagen:</label><br><br>
         <input type="file" id="imagen" name="imagen" required><br><br>
@@ -75,27 +75,25 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
             if ($resultado->num_rows > 0) {
                 echo "<p class='w3-text-red'>Ya existe un pokemon con ese nombre</p>";
             } else {
-                if (isset($_FILES["imagen"])) {
-                    $extension = htmlspecialchars(pathinfo($_FILES["imagen"], PATHINFO_EXTENSION));
-                    if (
-                        $_FILES["imagen"]["error"] == 0 &&
-                        $_FILES["imagen"]["size"] > 0
-                    ) {
-                        if ($extension == "png" || $extension == 'jpg' || $extension == 'jpeg') {
-                            $rutaImagen = $carpetaImagenes . $_FILES["imagen"]['name'] . '.jpg';
-                            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
-                            $stmt = $conexion->prepare("INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES (?, ?, ?, ?, ?)");
-                            $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $rutaImagen);
-                            if ($stmt->execute()) {
-                                echo "<p>El pokemon fue agregado</p>";
-                            } else {
-                                echo "Error: " . $stmt->error;
-                            }
-                            return true;
+                if (
+                    isset($_FILES["imagen"]) &&
+                    $_FILES["imagen"]["error"] == 0 &&
+                    $_FILES["imagen"]["size"] > 0
+                ) {
+                    $extension = pathinfo($_FILES["imagen"]["name"], PATHINFO_EXTENSION);
+                    if ($extension == "png" || $extension == 'jpg' || $extension == 'jpeg') {
+                        $rutaImagen = $carpetaImagenes . $nombre . '.jpg';
+                        move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
+                        $imagen = "imagenes/" . $nombre . ".jpg";
+                        $stmt = $conexion->prepare("INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES (?, ?, ?, ?, ?)");
+                        $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $imagen);
+                        if ($stmt->execute()) {
+                            echo "<p>El pokemon fue agregado</p>";
                         } else {
-                            echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
-                            return false;
+                            echo "Error: " . $stmt->error;
                         }
+                    } else {
+                        echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
                     }
                 }
             }
