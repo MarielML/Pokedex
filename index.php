@@ -78,11 +78,14 @@
                     <?php if (isset($_SESSION['logueado'])): ?>
                         <div class="acciones">
                             <td>
-                                <a><button>Modificación</button></a>
-                                <a><button>Baja</button></a>
+                                <a href="modificar.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
+                                    <button>Modificación</button>
+                                </a>
+                                <a href="baja.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
+                                    <button type="submit">Baja</button>
+                                </a>
                             </td>
                         </div>
-
                     <?php endif; ?>
                 </tr>
             <?php endforeach; ?>

@@ -32,7 +32,7 @@
     </section>
 
     <section class="volver">
-        <a href="index.php">Volver</a>
+        <a href="index.php"><button class="w3-button w3-red">Volver</button></a>
     </section>
 </body>
 
