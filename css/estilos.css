@@ -93,7 +93,7 @@ a {
   font-size: 1.5rem;
 }
 
-.registro {
+.registro, .form-agregar {
   display: flex;
   flex-direction: column;
   justify-content: center;

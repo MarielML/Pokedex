@@ -9,7 +9,9 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro</title>
+    <title>Pokedex</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="./css/estilos.css">
 </head>
@@ -38,7 +40,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
         $resultado = $stmt->get_result();
 
         if ($resultado->num_rows > 0) {
-            echo "<p class='w3-text-red'>El nombre de usuario ya está en uso.</p>";
+            echo "<p class='w3-text-red'>El nombre de usuario ya está en uso</p>";
         } else {
             $stmt = $conexion->prepare("SELECT * FROM usuario WHERE email = ?");
             $stmt->bind_param("s", $email);

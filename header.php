@@ -6,12 +6,13 @@ session_start();
     <nav>
         <div class="flex items-center">
             <div class="w-12 h-12 bg-gray-300 flex items-center justify-center">
-                <img src="" alt="logo">
+                <a href="index.php"><img src="" alt="logo"></a>
             </div>
         </div>
-        <h1 class="text-4xl">
-            Pokedex
-        </h1>
+        <a href="index.php">
+            <h1 class="text-4xl">
+                Pokedex</h1>
+        </a>
         <div class="flex space-x-4">
             <?php if (isset($_SESSION['logueado'])): ?>
                 <div class="cerrarSesion">
@@ -53,12 +54,6 @@ session_start();
         </div>
     </nav>
 
-    <div class="buscador">
-        <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
-            type="text" />
-        <button class="border border-gray-400 p-2">
-            ¿Quién es este pokemon?
-        </button>
-    </div>
+
 
 </header>

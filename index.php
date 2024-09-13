@@ -15,6 +15,17 @@
     <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
     include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
+    ?>
+
+    <div class="buscador">
+        <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
+            type="text" />
+        <button class="border border-gray-400 p-2">
+            ¿Quién es este pokemon?
+        </button>
+    </div>
+
+    <?php
     $stmt = $conexion->prepare("SELECT * FROM pokemon");
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -82,7 +93,7 @@
     <div class="agregar">
         <?php
         if (isset($_SESSION['logueado'])) {
-            echo "<a><button>Agregar pokemon</button></a>";
+            echo "<a href='agregar.php'><button>Agregar pokemon</button></a>";
         }
         ?>
     </div>
