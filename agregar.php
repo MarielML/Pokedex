@@ -2,6 +2,21 @@
 session_start();
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
 $carpetaImagenes = __DIR__ . '/imagenes/';
+function extractGetParameterOrDefault($param, $defaultValue = "")
+{
+    return isset($_POST[$param]) && $_POST[$param] !== "" ? $_POST[$param] : $defaultValue;
+}
+
+function agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen)
+{
+    $stmt = $conexion->prepare("INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $imagen);
+    if ($stmt->execute()) {
+        header('Location: index.php');
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -22,9 +37,9 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
     <form method="post" enctype="multipart/form-data">
         <input type="number" id="numero" name="numero" required placeholder="Número"><br><br>
         <input type="text" id="nombre" name="nombre" required placeholder="Nombre"><br><br>
-        <label for="tipo">Tipo:</label><br><br>
 
-        <select id="tipo" name="tipo" required>
+        <label for="tipo">Tipo:</label><br><br>
+        <select id="tipo" name="tipo">
             <option value="normal">Normal</option>
             <option value="lucha">Lucha</option>
             <option value="volador">Volador</option>
@@ -46,10 +61,10 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
         </select><br><br>
 
         <label for="descripcion">Descripción:</label><br><br>
-        <textarea id="descripcion" name="descripcion" rows="5" cols="33" required></textarea><br><br>
+        <textarea id="descripcion" name="descripcion" rows="5" cols="33"></textarea><br><br>
 
         <label for="imagen">Imagen:</label><br><br>
-        <input type="file" id="imagen" name="imagen" required><br><br>
+        <input type="file" id="imagen" name="imagen"><br><br>
 
         <button type="submit" class="w3-button w3-blue">Agregar</button><br><br>
     </form>
@@ -58,7 +73,7 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
         $numero = $_POST['numero'];
         $nombre = $_POST['nombre'];
         $tipo = "imagenes/" . $_POST['tipo'] . ".jpg";
-        $descripcion = $_POST['descripcion'];
+        $descripcion = extractGetParameterOrDefault("descripcion", "Sin descripción");
 
         $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE numero = ?");
         $stmt->bind_param("s", $numero);
@@ -85,23 +100,20 @@ $carpetaImagenes = __DIR__ . '/imagenes/';
                         $rutaImagen = $carpetaImagenes . $nombre . '.jpg';
                         move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
                         $imagen = "imagenes/" . $nombre . ".jpg";
-                        $stmt = $conexion->prepare("INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES (?, ?, ?, ?, ?)");
-                        $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $imagen);
-                        if ($stmt->execute()) {
-                            echo "<p>El pokemon fue agregado</p>";
-                        } else {
-                            echo "Error: " . $stmt->error;
-                        }
+                        agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen);
                     } else {
                         echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
                     }
+                } else {
+                    $imagen = "Sin imagen";
+                    agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen);
                 }
             }
         }
     }
     $conexion->close();
     ?>
-    <a href="index.php"><button class="w3-button w3-red">Volver</button></a>
+    <a href="index.php"><button class="w3-button w3-red">Cancelar</button></a>
 </body>
 
 </html>

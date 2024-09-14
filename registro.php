@@ -55,7 +55,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
                     $stmt = $conexion->prepare("INSERT INTO usuario (usuario, nombre, password, email) VALUES (?, ?, ?, ?)");
                     $stmt->bind_param("ssss", $nombreUsuario, $nombre, $hashed_password, $email);
                     if ($stmt->execute()) {
-                        echo "<p>Registro exitoso</p>";
+                        $_SESSION['logueado'] = $nombreUsuario;
+                        header('Location: index.php');
                     } else {
                         echo "Error: " . $stmt->error;
                     }
@@ -67,7 +68,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php")
     }
     $conexion->close();
     ?>
-    <a href="index.php"><button class="w3-button w3-red">Volver</button></a>
+    <a href="index.php"><button class="w3-button w3-red">Cancelar</button></a>
 </body>
 
 </html>
