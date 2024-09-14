@@ -86,7 +86,8 @@ function modificar($conexion, $param1, $param2, $id)
             $nombre = extractGetParameterOrDefault("nombre", "", $pokemon["nombre"]);
             $tipo = isset($_POST["tipo"]) && $_POST["tipo"] !== "actual" ? "tipos/" . $_POST["tipo"] . ".jpg" : $pokemon["tipo"];
             $descripcion = extractGetParameterOrDefault("descripcion", "", $pokemon["descripcion"]);
-            $nombreImagenOriginal = "imagenes/" . $pokemon["nombre"] . ".jpg";
+            $nombreImagenOriginal = $carpetaImagenes . $pokemon["nombre"] . ".jpg";
+            $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
             $nombreImagen = extractGetParameterOrDefault("nombre", "", $pokemon["nombre"]);
         }
 
@@ -125,10 +126,10 @@ function modificar($conexion, $param1, $param2, $id)
                     }
                 } else {
                     if (file_exists($nombreImagenOriginal)) {
-                        $nombreImagenNuevo = "imagenes/" . $nombre . ".jpg";
+                        $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
                         rename($nombreImagenOriginal, $nombreImagenNuevo);
                     }
-                    $imagen = $pokemon["imagen"];
+                    $imagen = "imagenes/" . $nombre . ".jpg";
                     modificar($conexion, "numero", $numero, $id);
                     modificar($conexion, "nombre", $nombre, $id);
                     modificar($conexion, "tipo", $tipo, $id);
