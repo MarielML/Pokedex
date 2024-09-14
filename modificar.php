@@ -15,6 +15,17 @@ function extractGetParameterOrDefault($param, $defaultValue = "", $dato)
     return isset($_POST[$param]) && $_POST[$param] !== $defaultValue ? $_POST[$param] : $dato;
 }
 
+function modificar($conexion, $param1, $param2, $id)
+{
+    $stmt = $conexion->prepare("UPDATE pokemon SET $param1 = ? WHERE id = ?");
+    $stmt->bind_param("ss", $param2, $id);
+    if ($stmt->execute()) {
+        header('Location: index.php');
+    } else {
+        echo "Error: " . $stmt->error;
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -72,49 +83,61 @@ function extractGetParameterOrDefault($param, $defaultValue = "", $dato)
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach ($pokemons as $pokemon) {
             $numero = extractGetParameterOrDefault("numero", "", $pokemon["numero"]);
-            $tipo = isset($_POST["tipo"]) && $_POST["tipo"] !== "actual" ? "imagenes/" . $_POST["tipo"] : $pokemon["tipo"];
+            $nombre = extractGetParameterOrDefault("nombre", "", $pokemon["nombre"]);
+            $tipo = isset($_POST["tipo"]) && $_POST["tipo"] !== "actual" ? "tipos/" . $_POST["tipo"] . ".jpg" : $pokemon["tipo"];
+            $descripcion = extractGetParameterOrDefault("descripcion", "", $pokemon["descripcion"]);
+            $nombreImagenOriginal = "imagenes/" . $pokemon["nombre"] . ".jpg";
+            $nombreImagen = extractGetParameterOrDefault("nombre", "", $pokemon["nombre"]);
         }
-        
-        echo $tipo;
-        // $nombre = $_POST['nombre'];
-        // $tipo = "imagenes/" . $_POST['tipo'] . ".jpg";
-        // $descripcion = extractGetParameterOrDefault("descripcion", "Sin descripción");
 
-        // $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE numero = ?");
-        // $stmt->bind_param("s", $numero);
-        // $stmt->execute();
-        // $resultado = $stmt->get_result();
+        $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE numero = ? AND id != ?");
+        $stmt->bind_param("ss", $numero, $id);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
 
-        // if ($resultado->num_rows > 0) {
-        //     echo "<p class='w3-text-red'>Ya existe un pokemon con ese número</p>";
-        // } else {
-        //     $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre = ?");
-        //     $stmt->bind_param("s", $nombre);
-        //     $stmt->execute();
-        //     $resultado = $stmt->get_result();
-        //     if ($resultado->num_rows > 0) {
-        //         echo "<p class='w3-text-red'>Ya existe un pokemon con ese nombre</p>";
-        //     } else {
-        //         if (
-        //             isset($_FILES["imagen"]) &&
-        //             $_FILES["imagen"]["error"] == 0 &&
-        //             $_FILES["imagen"]["size"] > 0
-        //         ) {
-        //             $extension = pathinfo($_FILES["imagen"]["name"], PATHINFO_EXTENSION);
-        //             if ($extension == "png" || $extension == 'jpg' || $extension == 'jpeg') {
-        //                 $rutaImagen = $carpetaImagenes . $nombre . '.jpg';
-        //                 move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
-        //                 $imagen = "imagenes/" . $nombre . ".jpg";
-        //                 agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen);
-        //             } else {
-        //                 echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
-        //             }
-        //         } else {
-        //             $imagen = "Sin imagen";
-        //             agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen);
-        //         }
-        //     }
-        // }
+        if ($resultado->num_rows > 0) {
+            echo "<p class='w3-text-red'>Ya existe un pokemon con ese número</p>";
+        } else {
+            $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre = ? AND id != ?");
+            $stmt->bind_param("ss", $nombre, $id);
+            $stmt->execute();
+            $resultado = $stmt->get_result();
+            if ($resultado->num_rows > 0) {
+                echo "<p class='w3-text-red'>Ya existe un pokemon con ese nombre</p>";
+            } else {
+                if (
+                    isset($_FILES["imagen"]) &&
+                    $_FILES["imagen"]["error"] == 0 &&
+                    $_FILES["imagen"]["size"] > 0
+                ) {
+                    $extension = pathinfo($_FILES["imagen"]["name"], PATHINFO_EXTENSION);
+                    if ($extension == "png" || $extension == 'jpg' || $extension == 'jpeg') {
+                        $rutaImagen = $carpetaImagenes . $nombreImagen . '.jpg';
+                        move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
+                        $imagen = "imagenes/" . $nombreImagen . ".jpg";
+                        modificar($conexion, "numero", $numero, $id);
+                        modificar($conexion, "nombre", $nombre, $id);
+                        modificar($conexion, "tipo", $tipo, $id);
+                        modificar($conexion, "descripcion", $descripcion, $id);
+                        modificar($conexion, "imagen", $imagen, $id);
+                    } else {
+                        echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
+                    }
+                } else {
+                    if (file_exists($nombreImagenOriginal)) {
+                        $nombreImagenNuevo = "imagenes/" . $nombre . ".jpg";
+                        rename($nombreImagenOriginal, $nombreImagenNuevo);
+                    }
+                    $imagen = $pokemon["imagen"];
+                    modificar($conexion, "numero", $numero, $id);
+                    modificar($conexion, "nombre", $nombre, $id);
+                    modificar($conexion, "tipo", $tipo, $id);
+                    modificar($conexion, "descripcion", $descripcion, $id);
+                    modificar($conexion, "imagen", $imagen, $id);
+                }
+            }
+        }
+
     }
     $conexion->close();
     ?>

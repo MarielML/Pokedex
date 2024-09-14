@@ -72,7 +72,7 @@ function agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen)
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $numero = $_POST['numero'];
         $nombre = $_POST['nombre'];
-        $tipo = "imagenes/" . $_POST['tipo'] . ".jpg";
+        $tipo = "tipos/" . $_POST['tipo'] . ".jpg";
         $descripcion = extractGetParameterOrDefault("descripcion", "Sin descripción");
 
         $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE numero = ?");

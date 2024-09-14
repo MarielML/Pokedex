@@ -59,7 +59,11 @@
                 <tr>
                     <td class="border border-gray-400 p-2">
                         <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                            <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>" alt="imagen">
+                            <?php if ($pokemon["imagen"] == "Sin imagen"): ?>
+                                Sin imagen
+                            <?php else: ?>
+                                <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>" alt="imagen">
+                            <?php endif; ?>
                         </a>
                     </td>
                     <td class="border border-gray-400 p-2">
