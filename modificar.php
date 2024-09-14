@@ -76,6 +76,11 @@ function modificar($conexion, $param1, $param2, $id)
         <label for="imagen">Imagen:</label><br><br>
         <input type="file" id="imagen" name="imagen"><br><br>
 
+        <label for="eliminarImagen">
+            <input type="checkbox" id="eliminarImagen" name="eliminarImagen">
+            Eliminar imagen
+        </label><br><br>
+
         <button type="submit" class="w3-button w3-blue">Modificar</button><br><br>
     </form>
 
@@ -106,35 +111,44 @@ function modificar($conexion, $param1, $param2, $id)
             if ($resultado->num_rows > 0) {
                 echo "<p class='w3-text-red'>Ya existe un pokemon con ese nombre</p>";
             } else {
-                if (
-                    isset($_FILES["imagen"]) &&
-                    $_FILES["imagen"]["error"] == 0 &&
-                    $_FILES["imagen"]["size"] > 0
-                ) {
-                    $extension = pathinfo($_FILES["imagen"]["name"], PATHINFO_EXTENSION);
-                    if ($extension == "png" || $extension == 'jpg' || $extension == 'jpeg') {
-                        $rutaImagen = $carpetaImagenes . $nombreImagen . '.jpg';
-                        move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
-                        $imagen = "imagenes/" . $nombreImagen . ".jpg";
-                        modificar($conexion, "numero", $numero, $id);
-                        modificar($conexion, "nombre", $nombre, $id);
-                        modificar($conexion, "tipo", $tipo, $id);
-                        modificar($conexion, "descripcion", $descripcion, $id);
-                        modificar($conexion, "imagen", $imagen, $id);
-                    } else {
-                        echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
-                    }
-                } else {
-                    if (file_exists($nombreImagenOriginal)) {
-                        $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
-                        rename($nombreImagenOriginal, $nombreImagenNuevo);
-                    }
-                    $imagen = "imagenes/" . $nombre . ".jpg";
+                if (isset($_POST["eliminarImagen"])) {
+                    $imagen = "Sin imagen";
                     modificar($conexion, "numero", $numero, $id);
                     modificar($conexion, "nombre", $nombre, $id);
                     modificar($conexion, "tipo", $tipo, $id);
                     modificar($conexion, "descripcion", $descripcion, $id);
                     modificar($conexion, "imagen", $imagen, $id);
+                } else {
+                    if (
+                        isset($_FILES["imagen"]) &&
+                        $_FILES["imagen"]["error"] == 0 &&
+                        $_FILES["imagen"]["size"] > 0
+                    ) {
+                        $extension = pathinfo($_FILES["imagen"]["name"], PATHINFO_EXTENSION);
+                        if ($extension == "png" || $extension == 'jpg' || $extension == 'jpeg') {
+                            $rutaImagen = $carpetaImagenes . $nombreImagen . '.jpg';
+                            move_uploaded_file($_FILES["imagen"]["tmp_name"], $rutaImagen);
+                            $imagen = "imagenes/" . $nombreImagen . ".jpg";
+                            modificar($conexion, "numero", $numero, $id);
+                            modificar($conexion, "nombre", $nombre, $id);
+                            modificar($conexion, "tipo", $tipo, $id);
+                            modificar($conexion, "descripcion", $descripcion, $id);
+                            modificar($conexion, "imagen", $imagen, $id);
+                        } else {
+                            echo "<p class='w3-text-red'>Sólo puedes publicar imágenes png, jpg o jpeg</p>";
+                        }
+                    } else {
+                        if (file_exists($nombreImagenOriginal)) {
+                            $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
+                            rename($nombreImagenOriginal, $nombreImagenNuevo);
+                        }
+                        $imagen = "imagenes/" . $nombre . ".jpg";
+                        modificar($conexion, "numero", $numero, $id);
+                        modificar($conexion, "nombre", $nombre, $id);
+                        modificar($conexion, "tipo", $tipo, $id);
+                        modificar($conexion, "descripcion", $descripcion, $id);
+                        modificar($conexion, "imagen", $imagen, $id);
+                    }
                 }
             }
         }
