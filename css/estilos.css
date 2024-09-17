@@ -88,8 +88,11 @@ table thead {
 .acciones {
   display: flex;
   justify-content: center;
-  justify-content: space-between;
   align-items: center;
+}
+
+.acciones * {
+  margin: 0 5px;
 }
 
 a {

@@ -44,20 +44,19 @@ function mostrarTabla($pokemons)
                         <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['numero']) . '</a>
                     </td>
                     <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['nombre']) .
-            '</a>
+                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['nombre']) . '</a>
                     </td>';
         if (isset($_SESSION['logueado'])) {
-            echo '<div class="acciones">
-                            <td>
+            echo '<td>
+            <div class="acciones">
                                 <a href="modificar.php?id=' . htmlspecialchars($pokemon['id']) . '">
                                     <button>Modificación</button>
                                 </a>
-                                <a href="baja.php?id=' . htmlspecialchars($pokemon['id']) . '">
-                                    <button type="submit">Baja</button>
-                                </a>
-                            </td>
-                        </div>';
+                                <form action="baja.php?id=' . htmlspecialchars($pokemon['id']) . '" onsubmit="confirmarEliminacion(event)" method="post">
+                                    <button type="submit" >Baja</button>
+                                </form>
+                                </div>
+                            </td>';
         }
         echo '</tr>';
     }
@@ -121,7 +120,7 @@ function mostrarTabla($pokemons)
     $conexion->close();
     ?>
 
-
+    <script src="confirmarBaja.js"></script>
 
 </body>
 
