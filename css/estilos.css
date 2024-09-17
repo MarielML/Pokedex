@@ -31,8 +31,12 @@ header a {
   font-size: 1.5rem;
 }
 
+.logo {
+  width: 100px;
+}
+
 .buscador {
-  width: 100%;
+  width: 90%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,7 +46,7 @@ header a {
 }
 
 .buscador input {
-  width: 70%;
+  width: 50%;
   margin: 0 1rem;
 }
 

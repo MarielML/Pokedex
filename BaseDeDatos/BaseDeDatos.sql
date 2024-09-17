@@ -13,9 +13,7 @@ CREATE TABLE pokemon (
 CREATE TABLE usuario (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario VARCHAR(255) NOT NULL UNIQUE,
-    nombre VARCHAR(255) NOT NULL,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE
+    password VARCHAR(255) NOT NULL
 );
 
 INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES
@@ -25,4 +23,5 @@ INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES
 (25, 'Pikachu', 'tipos/electrico.jpg', 'Pikachu almacena una gran cantidad de electricidad en sus mejillas. Estas parecen cargarse eléctricamente durante la noche mientras duerme. Las mejillas de Pikachu también pueden ser recargadas mediante una descarga eléctrica, como se ha podido observar en algunos episodios del anime. A veces suelta unas pequeñas descargas cuando se acaba de despertar. Las mejillas son las que generan electricidad, pero esta es conducida y descargada por la punta de su cola produciendo descargas eléctricas, que aumentan de poder dependiendo del estado de ánimo de Pikachu. Muchas veces, en las tormentas se juntan y absorben electricidad de los relámpagos.', 'imagenes/Pikachu.jpg'),
 (133, 'Eevee', 'tipos/normal.jpg', 'Eevee es un Pokémon de tipo normal que se asemeja en tamaño y forma a un pequeño zorro. Asimismo, tiene gran similitud con un perro de raza pomerania: ambos poseen mucho pelo en cuello y cola, así como un comportamiento que lo hace ideal como mascota. Posee largas orejas puntiagudas y una cola en forma de pincel. Su cuerpo, de constitución física ágil y flexible, está adaptado a la velocidad y la agilidad. Los Eevee son muy raros en la naturaleza. A veces, viven cerca de las ciudades y pueblos. Es posible que Eevee viva casi en cualquier lugar, y pueden evolucionar para adaptarse a su entorno. Fue documentado por primera vez en Kanto, pero también se han visto en Johto, Sinnoh, Teselia y Kalos. Eevee es un Pokémon ideal como mascota: es fiel, cariñoso, alegre, juguetón, inteligente y noble, lo que lo hace perfecto para ser compañía de niños pequeños, también al ser de apariencia bella, fina y tierna es excelente para participar en los Concursos Pokémon al igual que sus evoluciones. A los niños y a las niñas les fascina por su belleza y dulzura. El color predominante de su pelo es el café oscuro, con un tono crema en el cuello y al final de su cola. La zona del cuello presenta un pelaje más denso y largo. Sus ojos tienen un tono castaño. Su pelaje es suave, corto y cuando tiende a ponerse más brillante, que es claro signo de que está preparado para evolucionar. Eevee es conocido debido a sus numerosas evoluciones. Su inestabilidad genética le permite transformarse al ser expuesto a las piedras elementales, teniendo amistad con su entrenador o entrenar en cierta zona hará que pueda evolucionar en 8 Pokémon de distintos tipos elementales. Una vez que evoluciona, su carácter cambia dependiendo de la evolución.', 'imagenes/Eevee.jpg');
 
-
+INSERT INTO usuario(usuario, password) VALUES
+("ADMIN", "12345")

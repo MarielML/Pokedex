@@ -41,23 +41,10 @@ function agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen)
         <label for="tipo">Tipo:</label><br><br>
         <select id="tipo" name="tipo">
             <option value="normal">Normal</option>
-            <option value="lucha">Lucha</option>
-            <option value="volador">Volador</option>
-            <option value="veneno">Veneno</option>
-            <option value="tierra">Tierra</option>
-            <option value="roca">Roca</option>
-            <option value="bicho">Bicho</option>
-            <option value="fantasma">Fantasma</option>
-            <option value="acero">Acero</option>
             <option value="fuego">Fuego</option>
             <option value="agua">Agua</option>
             <option value="planta">Planta</option>
             <option value="electrico">Eléctrico</option>
-            <option value="psiquico">Psíquico</option>
-            <option value="hielo">Hielo</option>
-            <option value="dragon">Dragón</option>
-            <option value="hada">Hada</option>
-            <option value="siniestro">Siniestro</option>
         </select><br><br>
 
         <label for="descripcion">Descripción:</label><br><br>

@@ -6,12 +6,13 @@ session_start();
     <nav>
         <div class="flex items-center">
             <div class="w-12 h-12 bg-gray-300 flex items-center justify-center">
-                <a href="index.php"><img src="" alt="logo"></a>
+                <a href="index.php"><img class="logo" src="logo.jpg" alt="logo"></a>
             </div>
         </div>
         <a href="index.php">
             <h1 class="text-4xl">
-                Pokedex</h1>
+                Pokedex
+            </h1>
         </a>
         <div class="flex space-x-4">
             <?php if (isset($_SESSION['logueado'])): ?>
@@ -26,7 +27,6 @@ session_start();
                     <input type="password" id="clave" name="clave" required placeholder="Contraseña"
                         class="border border-gray-400 p-2 rounded">
                     <button type="submit" class="border border-gray-400 p-2 rounded w3-button w3-blue">Ingresar</button>
-                    <a href="registro.php" class="border border-gray-400 p-2 rounded w3-button w3-blue">Registrarse</a>
                 </form>
 
                 <?php
@@ -40,7 +40,7 @@ session_start();
                     $resultado = $stmt->get_result();
                     $usuario = $resultado->fetch_assoc();
 
-                    if ($usuario && password_verify($clave, $usuario['password'])) {
+                    if ($usuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
                         $_SESSION['logueado'] = $nombreUsuario;
                         header('Location: index.php');
                     } else {
@@ -53,7 +53,4 @@ session_start();
 
         </div>
     </nav>
-
-
-
 </header>

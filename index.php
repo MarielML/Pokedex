@@ -1,3 +1,72 @@
+<?php
+function mostrarTabla($pokemons)
+{
+    echo '<table class="w-full border-collapse border border-gray-400">
+        <thead>
+            <tr>
+                <th>
+                    Imagen
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Número
+                </th>
+                <th>
+                    Nombre
+                </th>';
+    if (isset($_SESSION['logueado'])) {
+        echo '<th>
+                        Acciones
+                    </th>';
+    }
+    echo '</tr>
+        </thead>
+        <tbody>';
+    foreach ($pokemons as $pokemon) {
+        echo '<tr>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">';
+        if ($pokemon["imagen"] == "Sin imagen") {
+            echo 'Sin imagen';
+        } else {
+            echo '<img src="' . htmlspecialchars($pokemon['imagen']) . '" alt="imagen">';
+        }
+        echo '</a>
+                    </td>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">
+                            <img src="' . htmlspecialchars($pokemon['tipo']) . '" alt="tipo">
+                        </a>
+                    </td>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['numero']) . '</a>
+                    </td>
+                    <td class="border border-gray-400 p-2">
+                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['nombre']) .
+            '</a>
+                    </td>';
+        if (isset($_SESSION['logueado'])) {
+            echo '<div class="acciones">
+                            <td>
+                                <a href="modificar.php?id=' . htmlspecialchars($pokemon['id']) . '">
+                                    <button>Modificación</button>
+                                </a>
+                                <a href="baja.php?id=' . htmlspecialchars($pokemon['id']) . '">
+                                    <button type="submit">Baja</button>
+                                </a>
+                            </td>
+                        </div>';
+        }
+        echo '</tr>';
+    }
+    echo '</tbody>
+
+    </table>';
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +87,11 @@
     ?>
 
     <div class="buscador">
+        <select id="tipo" name="tipo">
+            <option value="nombre">Nombre</option>
+            <option value="tipo">Tipo</option>
+            <option value="numeroua">Número</option>
+        </select>
         <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
             type="text" />
         <button class="border border-gray-400 p-2">
@@ -30,72 +104,9 @@
     $stmt->execute();
     $resultado = $stmt->get_result();
     $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+
+    mostrarTabla($pokemons);
     ?>
-
-    <table class="w-full border-collapse border border-gray-400">
-        <thead>
-            <tr>
-                <th>
-                    Imagen
-                </th>
-                <th>
-                    Tipo
-                </th>
-                <th>
-                    Número
-                </th>
-                <th>
-                    Nombre
-                </th>
-                <?php if (isset($_SESSION['logueado'])): ?>
-                    <th>
-                        Acciones
-                    </th>
-                <?php endif; ?>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($pokemons as $pokemon): ?>
-                <tr>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                            <?php if ($pokemon["imagen"] == "Sin imagen"): ?>
-                                Sin imagen
-                            <?php else: ?>
-                                <img src="<?php echo htmlspecialchars($pokemon['imagen']); ?>" alt="imagen">
-                            <?php endif; ?>
-                        </a>
-                    </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                            <img src="<?php echo htmlspecialchars($pokemon['tipo']); ?>" alt="tipo">
-                        </a>
-                    </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>"><?php echo htmlspecialchars($pokemon['numero']); ?>
-                        </a>
-                    </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>"><?php echo htmlspecialchars($pokemon['nombre']); ?>
-                        </a>
-                    </td>
-                    <?php if (isset($_SESSION['logueado'])): ?>
-                        <div class="acciones">
-                            <td>
-                                <a href="modificar.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                                    <button>Modificación</button>
-                                </a>
-                                <a href="baja.php?id=<?php echo htmlspecialchars($pokemon['id']); ?>">
-                                    <button type="submit">Baja</button>
-                                </a>
-                            </td>
-                        </div>
-                    <?php endif; ?>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-
-    </table>
 
     <div class="agregar">
         <?php
