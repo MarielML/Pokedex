@@ -64,6 +64,7 @@ function mostrarTabla($pokemons)
 
     </table>';
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -82,19 +83,19 @@ function mostrarTabla($pokemons)
 <body class="bg-gray-100 p-8">
     <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
-    require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/buscar.php");
     include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
     ?>
 
     <div>
-        <form action="buscar.php" method="post" class="buscador">
+        <form action="" method="GET" class="buscador">
             <select id="categorias" name="categorias">
+                <option value="nombreTipoNumero">Nombre, tipo o número</option>
                 <option value="nombre">Nombre</option>
                 <option value="tipo">Tipo</option>
                 <option value="numero">Número</option>
             </select>
             <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
-                type="text" id="textoBuscado" name="textoBuscado"/>
+                type="text" id="textoBuscado" name="textoBuscado" />
             <button class="border border-gray-400 p-2">
                 ¿Quién es este pokemon?
             </button>
@@ -102,12 +103,50 @@ function mostrarTabla($pokemons)
     </div>
 
     <?php
-    // $stmt = $conexion->prepare("SELECT * FROM pokemon");
-    // $stmt->execute();
-    // $resultado = $stmt->get_result();
-    // $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
-    mostrarTabla($pokemons);
-   
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        if (isset($_GET['categorias'])) {
+            $categoriaSeleccionada = $_GET['categorias'];
+        }
+        $textoBuscado = isset($_GET["textoBuscado"]) && $_GET["textoBuscado"] !== "" ? $_GET["textoBuscado"] : "";
+
+        if ($textoBuscado == "") {
+            $stmt = $conexion->prepare("SELECT * FROM pokemon");
+        } else {
+            if ($categoriaSeleccionada === "nombreTipoNumero") {
+                $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ? OR SUBSTRING_INDEX(tipo, '/', -1) LIKE ? OR numero LIKE ?");
+                $param = "%$textoBuscado%";
+                $stmt->bind_param("sss", $param, $param, $param);
+            } else {
+                if ($categoriaSeleccionada === "tipo") {
+                    $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE SUBSTRING_INDEX(tipo, '/', -1) LIKE ?");
+                } else {
+                    $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE $categoriaSeleccionada LIKE ?");
+                }
+                $param = "%$textoBuscado%";
+                $stmt->bind_param("s", $param);
+            }
+        }
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+    } else {
+        $stmt = $conexion->prepare("SELECT * FROM pokemon");
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+    }
+
+    if (count($pokemons) > 0) {
+        mostrarTabla($pokemons);
+    } else {
+        echo "<p class='w3-text-red'>Pokemon no encontrado</p>";
+        $stmt = $conexion->prepare("SELECT * FROM pokemon");
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+        mostrarTabla($pokemons);
+    }
+
     ?>
 
     <div class="agregar">
