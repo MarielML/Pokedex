@@ -53,7 +53,8 @@ function mostrarTabla($pokemons)
                                     <button>Modificación</button>
                                 </a>
                                 <form action="baja.php?id=' . htmlspecialchars($pokemon['id']) . '" onsubmit="confirmarEliminacion(event)" method="post">
-                                    <button type="submit" >Baja</button>
+                                    <button type="submit">Baja</button>
+                                    
                                 </form>
                                 </div>
                             </td>';
@@ -64,6 +65,7 @@ function mostrarTabla($pokemons)
 
     </table>';
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -85,26 +87,67 @@ function mostrarTabla($pokemons)
     include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
     ?>
 
-    <div class="buscador">
-        <select id="tipo" name="tipo">
-            <option value="nombre">Nombre</option>
-            <option value="tipo">Tipo</option>
-            <option value="numeroua">Número</option>
-        </select>
-        <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
-            type="text" />
-        <button class="border border-gray-400 p-2">
-            ¿Quién es este pokemon?
-        </button>
+    <div>
+        <form action="" method="GET" class="buscador">
+            <select id="categorias" name="categorias">
+                <option value="nombreTipoNumero">Nombre, tipo o número</option>
+                <option value="nombre">Nombre</option>
+                <option value="tipo">Tipo</option>
+                <option value="numero">Número</option>
+            </select>
+            <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
+                type="text" id="textoBuscado" name="textoBuscado" />
+            <button class="border border-gray-400 p-2">
+                ¿Quién es este pokemon?
+            </button>
+        </form>
     </div>
 
     <?php
-    $stmt = $conexion->prepare("SELECT * FROM pokemon");
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        if (isset($_GET['categorias'])) {
+            $categoriaSeleccionada = $_GET['categorias'];
+        }
+        $textoBuscado = isset($_GET["textoBuscado"]) && $_GET["textoBuscado"] !== "" ? $_GET["textoBuscado"] : "";
 
-    mostrarTabla($pokemons);
+        if ($textoBuscado == "") {
+            $stmt = $conexion->prepare("SELECT * FROM pokemon");
+        } else {
+            if ($categoriaSeleccionada === "nombreTipoNumero") {
+                $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ? OR SUBSTRING_INDEX(tipo, '/', -1) LIKE ? OR numero LIKE ?");
+                $param = "%$textoBuscado%";
+                $stmt->bind_param("sss", $param, $param, $param);
+            } else {
+                if ($categoriaSeleccionada === "tipo") {
+                    $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE SUBSTRING_INDEX(tipo, '/', -1) LIKE ?");
+                } else {
+                    $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE $categoriaSeleccionada LIKE ?");
+                }
+                $param = "%$textoBuscado%";
+                $stmt->bind_param("s", $param);
+            }
+        }
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+    } else {
+        $stmt = $conexion->prepare("SELECT * FROM pokemon");
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+    }
+
+    if (count($pokemons) > 0) {
+        mostrarTabla($pokemons);
+    } else {
+        echo "<p class='w3-text-red'>Pokemon no encontrado</p>";
+        $stmt = $conexion->prepare("SELECT * FROM pokemon");
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
+        mostrarTabla($pokemons);
+    }
+
     ?>
 
     <div class="agregar">
