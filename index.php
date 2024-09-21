@@ -82,29 +82,32 @@ function mostrarTabla($pokemons)
 <body class="bg-gray-100 p-8">
     <?php
     require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
+    require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/buscar.php");
     include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
     ?>
 
-    <div class="buscador">
-        <select id="tipo" name="tipo">
-            <option value="nombre">Nombre</option>
-            <option value="tipo">Tipo</option>
-            <option value="numeroua">Número</option>
-        </select>
-        <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
-            type="text" />
-        <button class="border border-gray-400 p-2">
-            ¿Quién es este pokemon?
-        </button>
+    <div>
+        <form action="buscar.php" method="post" class="buscador">
+            <select id="categorias" name="categorias">
+                <option value="nombre">Nombre</option>
+                <option value="tipo">Tipo</option>
+                <option value="numero">Número</option>
+            </select>
+            <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
+                type="text" id="textoBuscado" name="textoBuscado"/>
+            <button class="border border-gray-400 p-2">
+                ¿Quién es este pokemon?
+            </button>
+        </form>
     </div>
 
     <?php
-    $stmt = $conexion->prepare("SELECT * FROM pokemon");
-    $stmt->execute();
-    $resultado = $stmt->get_result();
-    $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
-
+    // $stmt = $conexion->prepare("SELECT * FROM pokemon");
+    // $stmt->execute();
+    // $resultado = $stmt->get_result();
+    // $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
     mostrarTabla($pokemons);
+   
     ?>
 
     <div class="agregar">
