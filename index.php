@@ -53,7 +53,8 @@ function mostrarTabla($pokemons)
                                     <button>Modificación</button>
                                 </a>
                                 <form action="baja.php?id=' . htmlspecialchars($pokemon['id']) . '" onsubmit="confirmarEliminacion(event)" method="post">
-                                    <button type="submit" >Baja</button>
+                                    <button type="submit">Baja</button>
+                                    
                                 </form>
                                 </div>
                             </td>';
