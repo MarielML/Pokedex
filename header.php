@@ -31,8 +31,8 @@ session_start();
 
                 <?php
                 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                    $nombreUsuario = $_POST['usuario'];
-                    $clave = $_POST['clave'];
+                    $nombreUsuario = isset($_POST['usuario']) && $_POST['usuario'] !== "" ? $_POST['usuario'] : "";
+                    $clave = isset($_POST['clave']) && $_POST['clave'] !== "" ? $_POST['clave'] : "";
 
                     $stmt = $conexion->prepare("SELECT * FROM usuario WHERE usuario = ?");
                     $stmt->bind_param("s", $nombreUsuario);
@@ -40,11 +40,13 @@ session_start();
                     $resultado = $stmt->get_result();
                     $usuario = $resultado->fetch_assoc();
 
-                    if ($usuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
-                        $_SESSION['logueado'] = $nombreUsuario;
-                        header('Location: index.php');
-                    } else {
-                        echo "<p class='w3-text-red'>Usuario y/contraseña incorrectos</p>";
+                    if ($nombreUsuario !== "" && $clave !== "") {
+                        if ($usuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
+                            $_SESSION['logueado'] = $nombreUsuario;
+                            header('Location: index.php');
+                        } else {
+                            echo "<p class='w3-text-red'>Usuario y/contraseña incorrectos</p>";
+                        }
                     }
                     $stmt->close();
                 }

@@ -88,7 +88,7 @@ function mostrarTabla($pokemons)
     ?>
 
     <div>
-        <form action="" method="GET" class="buscador">
+        <form method="POST" class="buscador">
             <select id="categorias" name="categorias">
                 <option value="nombreTipoNumero">Nombre, tipo o número</option>
                 <option value="nombre">Nombre</option>
@@ -104,27 +104,29 @@ function mostrarTabla($pokemons)
     </div>
 
     <?php
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        if (isset($_GET['categorias'])) {
-            $categoriaSeleccionada = $_GET['categorias'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['categorias'])) {
+            $categoriaSeleccionada = $_POST['categorias'];
         }
-        $textoBuscado = isset($_GET["textoBuscado"]) && $_GET["textoBuscado"] !== "" ? $_GET["textoBuscado"] : "";
+        $textoBuscado = isset($_POST["textoBuscado"]) && $_POST["textoBuscado"] !== "" ? $_POST["textoBuscado"] : "";
 
         if ($textoBuscado == "") {
             $stmt = $conexion->prepare("SELECT * FROM pokemon");
         } else {
             if ($categoriaSeleccionada === "nombreTipoNumero") {
-                $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ? OR SUBSTRING_INDEX(tipo, '/', -1) LIKE ? OR numero LIKE ?");
+                $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ? OR (SUBSTRING_INDEX(tipo, '/', -1) LIKE ? AND SUBSTRING_INDEX(tipo, '.', 1) LIKE ?) OR numero LIKE ?");
                 $param = "%$textoBuscado%";
-                $stmt->bind_param("sss", $param, $param, $param);
+                $stmt->bind_param("ssss", $param, $param, $param, $param);
             } else {
                 if ($categoriaSeleccionada === "tipo") {
-                    $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE SUBSTRING_INDEX(tipo, '/', -1) LIKE ?");
+                    $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE SUBSTRING_INDEX(tipo, '/', -1) LIKE ? AND SUBSTRING_INDEX(tipo, '.', 1) LIKE ?");
+                    $param = "%$textoBuscado%";
+                    $stmt->bind_param("ss", $param, $param);
                 } else {
                     $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE $categoriaSeleccionada LIKE ?");
+                    $param = "%$textoBuscado%";
+                    $stmt->bind_param("s", $param);
                 }
-                $param = "%$textoBuscado%";
-                $stmt->bind_param("s", $param);
             }
         }
         $stmt->execute();
