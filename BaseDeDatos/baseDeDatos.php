@@ -3,5 +3,5 @@ $conexion = new mysqli(
     "localhost",
     "root",
     "",
-    "pokedex",
+    "pokedex"
 );

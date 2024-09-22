@@ -38,6 +38,8 @@ function modificar($conexion, $param1, $param2, $id)
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="./css/estilos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <title>Pokedex</title>
 </head>
 
@@ -129,12 +131,12 @@ function modificar($conexion, $param1, $param2, $id)
                             $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
                             rename($nombreImagenOriginal, $nombreImagenNuevo);
                         }
-                        $imagen = "imagenes/" . $nombre . ".jpg";
                         modificar($conexion, "numero", $numero, $id);
                         modificar($conexion, "nombre", $nombre, $id);
                         modificar($conexion, "tipo", $tipo, $id);
                         modificar($conexion, "descripcion", $descripcion, $id);
-                        modificar($conexion, "imagen", $imagen, $id);
+                        //borre la linea que agregaba la imagen ya que mas arriba validaba de que si no existia que la guarde
+                        // o si se modifique que la guarde, pero si no pasaba nada de eso, me estaria creando un archivo jpg vacio
                     }
                 }
             }
