@@ -1,69 +1,23 @@
 <?php
 global $conexion;
+//los requiere siempre arriba asi se rompe la pagina si no funciona la parte requerida
+require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
 function mostrarTabla($pokemons)
 {
-    echo '<table class="w-full border-collapse border border-gray-400">
-        <thead>
-            <tr>
-                <th>
-                    Imagen
-                </th>
-                <th>
-                    Tipo
-                </th>
-                <th>
-                    Número
-                </th>
-                <th>
-                    Nombre
-                </th>';
-    if (isset($_SESSION['logueado'])) {
-        echo '<th>
-                        Acciones
-                    </th>';
-    }
-    echo '</tr>
-        </thead>
-        <tbody>';
+    //este metodo tiene 3 funcionalidades
+    //ahora tiene una sola funcionalidad, que es imprimir los fragmentos de la tabla
+    require_once (__DIR__ . "/fragments/helperTable.php");
+    //->muestra la parte superior de la tabla --refactorizar esto no es necesario que sea llamado de una funcion
+    mostrarCabezeraTabla();
+    echo '<tbody><tr>';
     foreach ($pokemons as $pokemon) {
-        echo '<tr>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">';
-        if ($pokemon["imagen"] == "Sin imagen") {
-            echo 'Sin imagen';
-        } else {
-            echo '<img src="' . htmlspecialchars($pokemon['imagen']) . '" alt="imagen">';
-        }
-        echo '</a>
-                    </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">
-                            <img src="' . htmlspecialchars($pokemon['tipo']) . '" alt="tipo">
-                        </a>
-                    </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['numero']) . '</a>
-                    </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['nombre']) . '</a>
-                    </td>';
-        if (isset($_SESSION['logueado'])) {
-            echo '<td>
-            <div class="acciones">
-                                <a href="modificar.php?id=' . htmlspecialchars($pokemon['id']) . '">
-                                    <button>Modificación</button>
-                                </a>
-                                <form action="baja.php?id=' . htmlspecialchars($pokemon['id']) . '" onsubmit="confirmarEliminacion(event)" method="post">
-                                    <button type="submit">Baja</button>
-                                    
-                                </form>
-                                </div>
-                            </td>';
-        }
+        //-> muestra a los pokemon
+        mostrarPokemon($pokemon);
+        //->> muestra las acciones que puede realizar de logeado --refactorizar es ineficiente que pregunte siempre por las acciones
+        mostrarAccionesDeLogeado($pokemon['id']);
         echo '</tr>';
     }
     echo '</tbody>
-
     </table>';
 }
 
@@ -84,25 +38,24 @@ function mostrarTabla($pokemons)
 
 <body class="bg-gray-100 p-8">
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
 include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
 ?>
 
-<div>
+<section>
     <form method="POST" class="buscador">
-        <select id="categorias" name="categorias">
+        <label for="categorias"></label><select id="categorias" name="categorias">
             <option value="nombreTipoNumero">Nombre, tipo o número</option>
             <option value="nombre">Nombre</option>
             <option value="tipo">Tipo</option>
             <option value="numero">Número</option>
         </select>
-        <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
-               type="text" id="textoBuscado" name="textoBuscado" />
+        <label for="textoBuscado"></label><input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
+                                                 type="text" id="textoBuscado" name="textoBuscado" />
         <button class="border border-gray-400 p-2">
             ¿Quién es este pokemon?
         </button>
     </form>
-</div>
+</section>
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
