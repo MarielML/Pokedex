@@ -1,25 +1,27 @@
 <?php
 global $conexion;
 //los requiere siempre arriba asi se rompe la pagina si no funciona la parte requerida
+require_once(__DIR__ . "/fragments/helperTable.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
-function mostrarTabla($pokemons)
+function mostrarCuerpoDeTabla($pokemons)
 {
-    //este metodo tiene 3 funcionalidades
-    //ahora tiene una sola funcionalidad, que es imprimir los fragmentos de la tabla
-    require_once (__DIR__ . "/fragments/helperTable.php");
-    //->muestra la parte superior de la tabla --refactorizar esto no es necesario que sea llamado de una funcion
-    mostrarCabezeraTabla();
-    echo '<tbody><tr>';
-    foreach ($pokemons as $pokemon) {
-        //-> muestra a los pokemon
-        mostrarPokemon($pokemon);
-        //->> muestra las acciones que puede realizar de logeado --refactorizar es ineficiente que pregunte siempre por las acciones
-        mostrarAccionesDeLogeado($pokemon['id']);
-        echo '</tr>';
+    //este metodo ahora tiene una sola funcionalidad, que es imprimir los fragmentos de el cuerpo tabla
+    $path=isset($_SESSION['logueado']) ?"admin" :"cliente";
+    switch ($path){
+        case "admin":
+            //mostrarAccionesSiEstaLogeado(); -> mas adelante debe poder realizarlo por si solo,
+            //por ahora veremos que podemos hacer con lo de mas abajo
+            mostrarCuerpoDeTablaAdministrador($pokemons);
+            //TODO:REVISAR PORQUE QUEDA ARRIBA
+            mostrarBotonAgregarPokemon();
+            break;
+        default:
+            mostrarTablaCliente($pokemons);
+            break;
     }
-    echo '</tbody>
-    </table>';
 }
+
+
 
 ?>
 
@@ -29,11 +31,11 @@ function mostrarTabla($pokemons)
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokedex</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="./css/estilos.css">
+    <title>Pokedex</title>
 </head>
 
 <body class="bg-gray-100 p-8">
@@ -56,6 +58,30 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
         </button>
     </form>
 </section>
+<table class="w-full border-collapse border border-gray-400">
+    <thead>
+    <tr>
+        <th>
+            Imagen
+        </th>
+        <th>
+            Tipo
+        </th>
+        <th>
+            Número
+        </th>
+        <th>
+            Nombre
+        </th>
+        <?php
+        if(isset($_SESSION['logueado'])){
+            mostrarAccionesSiEstaLogeado();
+        }
+        ?>
+
+    </tr>
+    </thead>
+    <tbody>
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -94,25 +120,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 if (count($pokemons) > 0) {
-    mostrarTabla($pokemons);
+    mostrarCuerpoDeTabla($pokemons);
 } else {
     echo "<p class='w3-text-red'>Pokemon no encontrado</p>";
     $stmt = $conexion->prepare("SELECT * FROM pokemon");
     $stmt->execute();
     $resultado = $stmt->get_result();
     $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
-    mostrarTabla($pokemons);
+    mostrarCuerpoDeTabla($pokemons);
 }
 
 ?>
 
-<div class="agregar">
-    <?php
-    if (isset($_SESSION['logueado'])) {
-        echo "<a href='agregar.php'><button>Agregar pokemon</button></a>";
-    }
-    ?>
-</div>
+
+    </tbody>
+</table>
+
 
 <?php
 $stmt->close();

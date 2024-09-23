@@ -26,7 +26,6 @@ function mostrarPokemon($pokemon)
 
 function mostrarAccionesDeLogeado($id)
 {
-    if (isset($_SESSION['logueado'])) {
         echo '<td>
             <div class="acciones">
                                 <a href="modificar.php?id=' . htmlspecialchars($id) . '">
@@ -38,32 +37,37 @@ function mostrarAccionesDeLogeado($id)
                                 </form>
                                 </div>
                             </td>';
-    }
 }
-
-function mostrarCabezeraTabla()
+function mostrarAccionesSiEstaLogeado()
 {
-    echo '<table class="w-full border-collapse border border-gray-400">
-        <thead>
-            <tr>
-                <th>
-                    Imagen
-                </th>
-                <th>
-                    Tipo
-                </th>
-                <th>
-                    Número
-                </th>
-                <th>
-                    Nombre
-                </th>';
-    if (isset($_SESSION['logueado'])) {
-        echo '<th>
+    echo '<th>
                         Acciones
                     </th>';
-    }
-    echo '</tr>
-        </thead>';
 }
-?>
+function mostrarCuerpoDeTablaAdministrador($pokemons)
+{
+    foreach ($pokemons as $pokemon) {
+        echo '<tr>';
+        mostrarPokemon($pokemon);
+        mostrarAccionesDeLogeado($pokemon['id']);
+        echo '</tr>';
+    }
+
+}
+function mostrarTablaCliente($pokemons)
+{
+    foreach ($pokemons as $pokemon) {
+        echo '<tr>';
+        //-> muestra a los pokemon
+        mostrarPokemon($pokemon);
+        echo '</tr>';
+    }
+
+}
+function mostrarBotonAgregarPokemon()
+{
+    echo'
+<div class="agregar">
+         <a href=agregar.php><button>Agregar pokemon</button></a>
+</div>';
+}
