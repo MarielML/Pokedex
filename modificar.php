@@ -129,7 +129,14 @@ function modificar($conexion, $param1, $param2, $id)
                             $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
                             rename($nombreImagenOriginal, $nombreImagenNuevo);
                         }
-                        $imagen = "imagenes/" . $nombre . ".jpg";
+                        foreach ($pokemons as $pokemon) {
+                            if ($pokemon["imagen"] === "Sin imagen") {
+                                $imagen = "Sin imagen";
+                            } else {
+                                $imagen = "imagenes/" . $nombre . ".jpg";
+                            }
+                        }
+
                         modificar($conexion, "numero", $numero, $id);
                         modificar($conexion, "nombre", $nombre, $id);
                         modificar($conexion, "tipo", $tipo, $id);
