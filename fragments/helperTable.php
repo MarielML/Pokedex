@@ -2,8 +2,8 @@
 
 function mostrarPokemon($pokemon)
 {
-    echo '<td class="border border-gray-400 p-2">
-             <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">';
+    echo '<td>
+             <a class="w3-text-black" href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">';
     if ($pokemon["imagen"] == "Sin imagen") {
         echo 'Sin imagen';
     } else {
@@ -11,22 +11,22 @@ function mostrarPokemon($pokemon)
     }
     echo '</a>
                     </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">
+                    <td>
+                        <a class="w3-text-black" href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">
                             <img src="' . htmlspecialchars($pokemon['tipo']) . '" alt="tipo">
                         </a>
                     </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['numero']) . '</a>
+                    <td>
+                        <a class="w3-text-black" href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['numero']) . '</a>
                     </td>
-                    <td class="border border-gray-400 p-2">
-                        <a href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['nombre']) . '</a>
+                    <td>
+                        <a class="w3-text-black" href="pokemon.php?id=' . htmlspecialchars($pokemon['id']) . '">' . htmlspecialchars($pokemon['nombre']) . '</a>
                     </td>';
 }
 
 function mostrarAccionesDeLogeado($id)
 {
-        echo '<td>
+    echo '<td >
             <div class="acciones">
                                 <a href="modificar.php?id=' . htmlspecialchars($id) . '">
                                     <button>Modificación</button>
@@ -52,7 +52,6 @@ function mostrarCuerpoDeTablaAdministrador($pokemons)
         mostrarAccionesDeLogeado($pokemon['id']);
         echo '</tr>';
     }
-
 }
 function mostrarTablaCliente($pokemons)
 {
@@ -62,11 +61,10 @@ function mostrarTablaCliente($pokemons)
         mostrarPokemon($pokemon);
         echo '</tr>';
     }
-
 }
 function mostrarBotonAgregarPokemon()
 {
-    echo'
+    echo '
 <div class="agregar">
          <a href="./agregar.php"><button>Agregar pokemon</button></a>
 </div>';
