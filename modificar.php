@@ -144,6 +144,7 @@ function modificar($conexion, $param1, $param2, $id)
                         modificar($conexion, "nombre", $nombre, $id);
                         modificar($conexion, "tipo", $tipo, $id);
                         modificar($conexion, "descripcion", $descripcion, $id);
+			modificar($conexion, "imagen", $imagen, $id);
                     }
                 }
             }
