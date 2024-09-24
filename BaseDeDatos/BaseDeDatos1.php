@@ -18,8 +18,4 @@ class BaseDeDatos
         return $this->conexion;
     }
 
-    public function __destruct()
-    {
-        mysqli_close($this->conexion);
-    }
 }

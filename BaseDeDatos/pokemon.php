@@ -32,4 +32,45 @@ class pokemon
         }
     }
 
+    public function obtenerCoincidenciasDeTipoNombreNumero($textoBuscado)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ? OR (SUBSTRING_INDEX(tipo, '/', -1) LIKE ? AND SUBSTRING_INDEX(tipo, '.', 1) LIKE ?) OR numero LIKE ?");
+        $param = "%$textoBuscado%";
+        $stmt->bind_param("ssss", $param, $param, $param, $param);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function obtenerCoincidenciasDeTipo($textoBuscado)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM pokemon WHERE SUBSTRING_INDEX(tipo, '/', -1) LIKE ? AND SUBSTRING_INDEX(tipo, '.', 1) LIKE ?");
+        $param = "%$textoBuscado%";
+        $stmt->bind_param("ss", $param, $param);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function obtenerCoincidenciasDeNumero($textoBuscado)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM pokemon WHERE numero LIKE ?");
+        $param = "%$textoBuscado%";
+        $stmt->bind_param("s", $param);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function obtenerCoincidenciasDeNombre($textoBuscado)
+    {
+        $stmt = $this->conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ?");
+        $param = "%$textoBuscado%";
+        $stmt->bind_param("s", $param);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+
+    }
+
+    public function __destruct()
+    {
+        $this->conexion->close();
+    }
 }

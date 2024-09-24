@@ -1,5 +1,4 @@
 <?php
-global $conexion;
 //los requiere siempre arriba asi se rompe la pagina si no funciona la parte requerida
 require_once(__DIR__ . "/fragments/helperTable.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
@@ -43,7 +42,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
 ?>
 
 <section>
-    <form method="POST" class="buscador">
+    <form method="GET" class="buscador">
         <label for="categorias"></label><select id="categorias" name="categorias">
             <option value="nombreTipoNumero">Nombre, tipo o número</option>
             <option value="nombre">Nombre</option>
@@ -83,17 +82,18 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
     <tbody>
 
 <?php
+//TODO: Mi proximo paso al refactorizar seria realizar el polimorfismo dinamico
+//por ahora lo que realize fue que mi objeto pokemon se encargue de las consultas a la base de datos asi queda mas limpio
 $pokemon = new pokemon();
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    //si hago la clase pokemon que deberia de hacer?
+if ($_SERVER["REQUEST_METHOD"] == "GET") {
     //por lo que entienda esta porcion de codigo esta buscando
     //si hay algo en categorias en el select
-    if (isset($_POST['categorias'])) {
+    if (isset($_GET['categorias'])) {
         //agarra esto mismo
-        $categoriaSeleccionada = $_POST['categorias'];
+        $categoriaSeleccionada = $_GET['categorias'];
     }
     //consigue el texto buscado si hay algo en texto buscado y es diferente de vacio consigue el texto osino obtiene una cadena vacia
-    $textoBuscado = isset($_POST["textoBuscado"]) && $_POST["textoBuscado"] !== "" ? $_POST["textoBuscado"] : "";
+    $textoBuscado = isset($_GET["textoBuscado"]) && $_GET["textoBuscado"] !== "" ? $_GET["textoBuscado"] : "";
     if ($textoBuscado == "") {
         //si el texto buscado es igual a vacio obtiene todos los pokes
         //obtengo de mi objeto pokemon todos los pokemons delegando una unica responsabilidad a este objeto
@@ -102,28 +102,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //si el texto buscado es diferente a vacio revisa valida lo que hay en categoria
         //para poder refactorizar categoria podria aplicar polimorfismo dinamico
         if ($categoriaSeleccionada === "nombreTipoNumero") {
-            //prepara la colsulta
-            $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE nombre LIKE ? OR (SUBSTRING_INDEX(tipo, '/', -1) LIKE ? AND SUBSTRING_INDEX(tipo, '.', 1) LIKE ?) OR numero LIKE ?");
-            $param = "%$textoBuscado%";
-            $stmt->bind_param("ssss", $param, $param, $param, $param);
+            //obtengo coincidencias segun nombreTipoNumero
+            $pokemons = $pokemon->obtenerCoincidenciasDeTipoNombreNumero($textoBuscado);
         } else {
             //valida que la categoria sea igual a tipo
             if ($categoriaSeleccionada === "tipo") {
-                $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE SUBSTRING_INDEX(tipo, '/', -1) LIKE ? AND SUBSTRING_INDEX(tipo, '.', 1) LIKE ?");
-                $param = "%$textoBuscado%";
-                $stmt->bind_param("ss", $param, $param);
+                $pokemons = $pokemon->obtenerCoincidenciasDeTipo($textoBuscado);
+            } else if ($categoriaSeleccionada === "nombre") {
+                $pokemons = $pokemon->obtenerCoincidenciasDeNombre($textoBuscado);
             } else {
-                $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE $categoriaSeleccionada LIKE ?");
-                $param = "%$textoBuscado%";
-                $stmt->bind_param("s", $param);
+                $pokemons = $pokemon->obtenerCoincidenciasDeNumero($textoBuscado);
             }
         }
-        $stmt->execute();
-        $resultado = $stmt->get_result();
-        $pokemons = $resultado->fetch_all(MYSQLI_ASSOC);
-    }
+   }
 }else {
-    //refactoreo esto ya que realizo lo mismo obtener pokemones
     $pokemons = $pokemon->obtenerTodosLosPokemons();
 }
 
@@ -131,22 +123,14 @@ if (count($pokemons) > 0) {
     mostrarCuerpoDeTabla($pokemons);
 } else {
     echo "<p class='w3-text-red'>Pokemon no encontrado</p>";
-    //obtengo todos los pokemones si al buscar no encuentro lo que busco
     $pokemons = $pokemon->obtenerTodosLosPokemons();
     mostrarCuerpoDeTabla($pokemons);
 }
-
 ?>
 
 
     </tbody>
 </table>
-
-
-<?php
-$stmt->close();
-$conexion->close();
-?>
 
 <script src="confirmarBaja.js"></script>
 

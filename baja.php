@@ -1,5 +1,4 @@
 <?php
-global $conexion;
 session_start();
 require_once(__DIR__ . "/BaseDeDatos/baseDeDatos.php");
 $id = $_GET['id'];
