@@ -1,24 +1,13 @@
 <?php
-//los requiere siempre arriba asi se rompe la pagina si no funciona la parte requerida
 require_once(__DIR__ . "/fragments/helperTable.php");
 require_once (__DIR__ . "/BaseDeDatos/pokemon.php");
-require_once (__DIR__ . "/helper/categoria.php");
-include_once ("helper/CategoriaNombreTipoNumero.php");
-include_once ("helper/Categoriatipo.php");
-include_once ("helper/CategoriaNumero.php");
-include_once ("helper/CategoriaNombre.php");
 
 function mostrarCuerpoDeTabla($pokemons)
 {
-    //este metodo ahora tiene una sola funcionalidad, que es imprimir los fragmentos de el cuerpo tabla
     $path=isset($_SESSION['logueado']) ?"admin" :"cliente";
     switch ($path){
         case "admin":
-            //mostrarAccionesSiEstaLogeado(); -> mas adelante debe poder realizarlo por si solo,
-            //por ahora veremos que podemos hacer con lo de mas abajo
             mostrarCuerpoDeTablaAdministrador($pokemons);
-            //TODO:REVISAR PORQUE QUEDA ARRIBA
-            mostrarBotonAgregarPokemon();
             break;
         default:
             mostrarTablaCliente($pokemons);
@@ -87,42 +76,45 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
     <tbody>
 
 <?php
-//Mi proximo paso al refactorizar seria realizar el polimorfismo dinamico
 $pokemon = new pokemon();
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    if (isset($_GET['categorias'])) {
-        //agarra esto mismo
-        $categoriaSeleccionada = $_GET['categorias'];
-    }
-    //consigue el texto buscado si hay algo en texto buscado y es diferente de vacio consigue el texto osino obtiene una cadena vacia
+
+    $categoriaSeleccionada = isset($_GET['categorias']) ?$_GET['categorias'] : "";
     $textoBuscado = isset($_GET["textoBuscado"]) && $_GET["textoBuscado"] !== "" ? $_GET["textoBuscado"] : "";
-    if ($textoBuscado == "") {
-        //si el texto buscado es igual a vacio obtiene todos los pokes
-        //obtengo de mi objeto pokemon todos los pokemons delegando una unica responsabilidad a este objeto
+
+    if ($textoBuscado == "" || $categoriaSeleccionada == "") {
         $pokemons = $pokemon->obtenerTodosLosPokemons();
     } else {
-        //si el texto buscado es diferente a vacio revisa valida lo que hay en categoria
-        //para poder refactorizar categoria podria aplicar polimorfismo dinamico
-        $categoria = new Categoria([new CategoriaNombreTipoNumero(), new Categoriatipo, new CategoriaNumero, new CategoriaNombre]);
-        $categoriaObtenida= $categoria->obtenerCategoria($categoriaSeleccionada);
-        $pokemons = $pokemon->obtenerCoincidenciasPor($categoriaObtenida,$textoBuscado);
+        if ($categoriaSeleccionada === "nombreTipoNumero") {
+            $pokemons = $pokemon->obtenerCoincidenciasDeTipoNombreNumero($textoBuscado);
+        } else if ($categoriaSeleccionada === "tipo") {
+            $pokemons = $pokemon->obtenerCoincidenciasDeTipo($textoBuscado);
+        } else if ($categoriaSeleccionada === "nombre") {
+            $pokemons = $pokemon->obtenerCoincidenciasDeNombre($textoBuscado);
+        } else {
+            $pokemons = $pokemon->obtenerCoincidenciasDeNumero($textoBuscado);
+        }
     }
+
 }else {
     $pokemons = $pokemon->obtenerTodosLosPokemons();
 }
 
-if (count($pokemons) > 0) {
-    mostrarCuerpoDeTabla($pokemons);
-} else {
+if (!count($pokemons) > 0) {
     echo "<p class='w3-text-red'>Pokemon no encontrado</p>";
     $pokemons = $pokemon->obtenerTodosLosPokemons();
-    mostrarCuerpoDeTabla($pokemons);
 }
+mostrarCuerpoDeTabla($pokemons);
+
 ?>
 
 
     </tbody>
 </table>
+
+<?php if(isset($_SESSION['logueado']))
+    mostrarBotonAgregarPokemon();
+?>
 
 <script src="confirmarBaja.js"></script>
 
