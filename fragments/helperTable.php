@@ -68,6 +68,6 @@ function mostrarBotonAgregarPokemon()
 {
     echo'
 <div class="agregar">
-         <a href=agregar.php><button>Agregar pokemon</button></a>
+         <a href="./agregar.php"><button>Agregar pokemon</button></a>
 </div>';
 }

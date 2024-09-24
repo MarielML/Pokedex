@@ -13,23 +13,10 @@ class BaseDeDatos
         }
     }
 
-    public function consulta($query="SELECT * FROM pokemon")
+    public function getConexion()
     {
-        $consulta=mysqli_query($this->conexion,$query);
-        return mysqli_fetch_assoc($consulta);
+        return $this->conexion;
     }
-
-    public function insertPokemon($numero="", $nombre="", $tipo="", $descripcion="", $imagen="")
-    {
-        $stmt = $this->conexion->prepare("INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $imagen);
-        if ($stmt->execute()) {
-            header('Location: index.php');
-        } else {
-            echo "Error: " . $stmt->error;
-        }
-    }
-
 
     public function __destruct()
     {

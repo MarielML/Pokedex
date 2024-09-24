@@ -1,4 +1,5 @@
 <?php
+global $conexion;
 session_start();
 ?>
 
@@ -26,10 +27,10 @@ session_start();
                 </div>
             <?php else: ?>
                 <form method="post" class="d-inline-flex">
-                    <input type="text" id="usuario" name="usuario" placeholder="Usuario"
-                           class="form-control me-2" required>
-                    <input type="password" id="clave" name="clave" required placeholder="Contraseña"
-                           class="form-control me-2">
+                    <label for="usuario"></label><input type="text" id="usuario" name="usuario" placeholder="Usuario"
+                                                        class="form-control me-2" required>
+                    <label for="clave"></label><input type="password" id="clave" name="clave" required placeholder="Contraseña"
+                                                      class="form-control me-2">
                     <button type="submit" class="btn btn-primary">Ingresar</button>
                 </form>
 
