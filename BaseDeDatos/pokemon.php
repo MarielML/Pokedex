@@ -69,8 +69,14 @@ class pokemon
 
     }
 
+    public function obtenerCoincidenciasPor($categoriaObtenida,$textoBuscado)
+    {
+        return $categoriaObtenida->obtenerCoinciencias($textoBuscado,$this);
+    }
+
     public function __destruct()
     {
         $this->conexion->close();
     }
+
 }

@@ -1,8 +1,13 @@
 <?php
 //los requiere siempre arriba asi se rompe la pagina si no funciona la parte requerida
 require_once(__DIR__ . "/fragments/helperTable.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
 require_once (__DIR__ . "/BaseDeDatos/pokemon.php");
+require_once (__DIR__ . "/helper/categoria.php");
+include_once ("helper/CategoriaNombreTipoNumero.php");
+include_once ("helper/Categoriatipo.php");
+include_once ("helper/CategoriaNumero.php");
+include_once ("helper/CategoriaNombre.php");
+
 function mostrarCuerpoDeTabla($pokemons)
 {
     //este metodo ahora tiene una sola funcionalidad, que es imprimir los fragmentos de el cuerpo tabla
@@ -82,12 +87,9 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
     <tbody>
 
 <?php
-//TODO: Mi proximo paso al refactorizar seria realizar el polimorfismo dinamico
-//por ahora lo que realize fue que mi objeto pokemon se encargue de las consultas a la base de datos asi queda mas limpio
+//Mi proximo paso al refactorizar seria realizar el polimorfismo dinamico
 $pokemon = new pokemon();
 if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    //por lo que entienda esta porcion de codigo esta buscando
-    //si hay algo en categorias en el select
     if (isset($_GET['categorias'])) {
         //agarra esto mismo
         $categoriaSeleccionada = $_GET['categorias'];
@@ -101,20 +103,10 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } else {
         //si el texto buscado es diferente a vacio revisa valida lo que hay en categoria
         //para poder refactorizar categoria podria aplicar polimorfismo dinamico
-        if ($categoriaSeleccionada === "nombreTipoNumero") {
-            //obtengo coincidencias segun nombreTipoNumero
-            $pokemons = $pokemon->obtenerCoincidenciasDeTipoNombreNumero($textoBuscado);
-        } else {
-            //valida que la categoria sea igual a tipo
-            if ($categoriaSeleccionada === "tipo") {
-                $pokemons = $pokemon->obtenerCoincidenciasDeTipo($textoBuscado);
-            } else if ($categoriaSeleccionada === "nombre") {
-                $pokemons = $pokemon->obtenerCoincidenciasDeNombre($textoBuscado);
-            } else {
-                $pokemons = $pokemon->obtenerCoincidenciasDeNumero($textoBuscado);
-            }
-        }
-   }
+        $categoria = new Categoria([new CategoriaNombreTipoNumero(), new Categoriatipo, new CategoriaNumero, new CategoriaNombre]);
+        $categoriaObtenida= $categoria->obtenerCategoria($categoriaSeleccionada);
+        $pokemons = $pokemon->obtenerCoincidenciasPor($categoriaObtenida,$textoBuscado);
+    }
 }else {
     $pokemons = $pokemon->obtenerTodosLosPokemons();
 }
