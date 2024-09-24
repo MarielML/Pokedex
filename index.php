@@ -36,7 +36,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
 ?>
 
 <section>
-    <form method="GET" class="buscador">
+    <form method="POST" class="buscador">
         <label for="categorias"></label><select id="categorias" name="categorias">
             <option value="nombreTipoNumero">Nombre, tipo o número</option>
             <option value="nombre">Nombre</option>
@@ -77,10 +77,11 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
 
 <?php
 $pokemon = new pokemon();
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-
-    $categoriaSeleccionada = isset($_GET['categorias']) ?$_GET['categorias'] : "";
-    $textoBuscado = isset($_GET["textoBuscado"]) && $_GET["textoBuscado"] !== "" ? $_GET["textoBuscado"] : "";
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if (isset($_POST['categorias'])) {
+            $categoriaSeleccionada = $_POST['categorias'];
+        }
+        $textoBuscado = isset($_POST["textoBuscado"]) && $_POST["textoBuscado"] !== "" ? $_POST["textoBuscado"] : "";
 
     if ($textoBuscado == "" || $categoriaSeleccionada == "") {
         $pokemons = $pokemon->obtenerTodosLosPokemons();
