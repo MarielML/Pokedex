@@ -1,32 +1,37 @@
 <?php
 session_start();
+require_once ("BaseDeDatos/baseDeDatos.php");
 ?>
 
-<header>
-    <nav>
-        <div class="flex items-center">
-            <div class="w-12 h-12 bg-gray-300 flex items-center justify-center">
-                <a href="index.php"><img class="logo" src="logo.jpg" alt="logo"></a>
-            </div>
+
+<header class="container py-3">
+    <nav class="row align-items-center">
+        <!-- Logo y título alineados a la izquierda -->
+        <div class="col-6 d-flex align-items-center">
+            <a href="index.php">
+                <img src="logo.jpg" alt="logo" class="img-fluid" style="width: 50px;">
+            </a>
+            <a href="index.php" class="ms-3">
+                <h1 class="fs-2">Pokedex</h1>
+            </a>
         </div>
-        <a href="index.php">
-            <h1 class="text-4xl">
-                Pokedex
-            </h1>
-        </a>
-        <div class="flex space-x-4">
+
+        <!-- Sección de login o cierre de sesión alineado a la derecha -->
+        <div class="col-6 text-end">
             <?php if (isset($_SESSION['logueado'])): ?>
-                <div class="cerrarSesion">
-                    <p>Usuario <?php echo htmlspecialchars($_SESSION['logueado']); ?></p>
-                    <a href="logout.php"><button class="w3-button w3-red">Cerrar sesión</button></a>
+                <div class="d-inline-block">
+                    <p class="d-inline fs-4">Usuario <?php echo htmlspecialchars($_SESSION['logueado']); ?></p>
+                    <a href="logout.php" class="ms-3">
+                        <button class="btn btn-danger">Cerrar sesión</button>
+                    </a>
                 </div>
             <?php else: ?>
-                <form method="post" class="login-form">
-                    <input type="text" id="usuario" name="usuario" placeholder="Usuario"
-                        class="border border-gray-400 p-2 rounded" required>
-                    <input type="password" id="clave" name="clave" required placeholder="Contraseña"
-                        class="border border-gray-400 p-2 rounded">
-                    <button type="submit" class="border border-gray-400 p-2 rounded w3-button w3-blue">Ingresar</button>
+                <form method="post" class="d-inline-flex">
+                    <label for="usuario"></label><input type="text" id="usuario" name="usuario" placeholder="Usuario"
+                                                        class="form-control me-2" required>
+                    <label for="clave"></label><input type="password" id="clave" name="clave" required placeholder="Contraseña"
+                                                      class="form-control me-2">
+                    <button type="submit" class="btn btn-primary">Ingresar</button>
                 </form>
 
                 <?php
@@ -52,7 +57,8 @@ session_start();
                 }
                 ?>
             <?php endif; ?>
-
         </div>
     </nav>
 </header>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>

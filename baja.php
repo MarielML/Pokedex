@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
+require_once(__DIR__ . "/BaseDeDatos/baseDeDatos.php");
 $id = $_GET['id'];
 
 $stmt = $conexion->prepare("DELETE FROM pokemon WHERE id = $id");

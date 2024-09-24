@@ -38,6 +38,8 @@ function modificar($conexion, $param1, $param2, $id)
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="./css/estilos.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <title>Pokedex</title>
 </head>
 
@@ -129,6 +131,7 @@ function modificar($conexion, $param1, $param2, $id)
                             $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
                             rename($nombreImagenOriginal, $nombreImagenNuevo);
                         }
+                      
                         foreach ($pokemons as $pokemon) {
                             if ($pokemon["imagen"] === "Sin imagen") {
                                 $imagen = "Sin imagen";
@@ -141,7 +144,6 @@ function modificar($conexion, $param1, $param2, $id)
                         modificar($conexion, "nombre", $nombre, $id);
                         modificar($conexion, "tipo", $tipo, $id);
                         modificar($conexion, "descripcion", $descripcion, $id);
-                        modificar($conexion, "imagen", $imagen, $id);
                     }
                 }
             }
