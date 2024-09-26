@@ -67,15 +67,28 @@ a {
   font-size: 1.5rem;
 }
 
-.registro,
 .form-agregar {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin-bottom: 20px;
 }
 
-@media screen and (max-width: 575px) {
+.form-agregar form {
+  width: 30%;
+  margin-top: 20px;
+}
+
+.form-agregar input, .form-agregar select, .form-agregar textarea, .form-agregar button {
+  width: 100%;
+}
+
+.form-agregar a {
+  width: 30%;
+}
+
+@media screen and (max-width: 730px) {
   nav {
     display: flex;
     flex-direction: column;
@@ -86,7 +99,7 @@ a {
   }
 
   nav form {
-   flex-direction: column;
+    flex-direction: column;
     width: 100%;
     margin-top: 20px;
   }
@@ -95,11 +108,50 @@ a {
     margin-bottom: 10px;
   }
 
+  .d-inline-block.logueado {
+    text-align: center !important;
+  }
+
+  .buscador {
+    width: 80%;
+    margin: 1rem auto;
+  }
+
   .buscador input,
   .buscador select,
   .buscador button {
     width: 100%;
     margin-bottom: 10px;
     font-size: 1rem;
+  }
+
+  table {
+    width: 80%;
+    margin: 3rem auto;
+    font-size: 1rem;
+  }
+
+  table img {
+    width: 50px;
+  }
+
+  .acciones {
+    flex-direction: column;
+  }
+
+  .acciones button {
+    width: 100px;
+  }
+
+  .form-agregar form {
+    width: 50%;
+  }
+  
+  .form-agregar input, .form-agregar select, .form-agregar textarea, .form-agregar button {
+    width: 100%;
+  }
+  
+  .form-agregar a {
+    width: 50%;
   }
 }
