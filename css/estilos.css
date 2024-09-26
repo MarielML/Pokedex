@@ -1,5 +1,5 @@
 body {
-  font-family: "Indie Flower", cursive;
+  font-family: "Indie Flower", cursive !important;
 }
 
 p {
@@ -76,9 +76,30 @@ a {
 }
 
 @media screen and (max-width: 575px) {
+  nav {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ingreso {
+    width: 100%;
+  }
+
+  nav form {
+   flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  nav form input {
+    margin-bottom: 10px;
+  }
+
   .buscador input,
   .buscador select,
   .buscador button {
     width: 100%;
+    margin-bottom: 10px;
+    font-size: 1rem;
   }
 }

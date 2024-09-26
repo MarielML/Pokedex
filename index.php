@@ -27,7 +27,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
                 <option value="tipo">Tipo</option>
                 <option value="numero">Número</option>
             </select>
-            <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
+            <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokemon"
                 type="text" id="textoBuscado" name="textoBuscado" />
             <button class="border border-gray-400 p-2">
                 ¿Quién es este pokemon?

@@ -11,8 +11,8 @@ require_once("BaseDeDatos/baseDeDatos.php");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="./css/estilos.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -33,7 +33,7 @@ require_once("BaseDeDatos/baseDeDatos.php");
             </div>
 
             <!-- Sección de login o cierre de sesión alineado a la derecha -->
-            <div class="col-6 text-end">
+            <div class="col-6 text-end .ingreso">
                 <?php if (isset($_SESSION['logueado'])): ?>
                     <div class="d-inline-block">
                         <p class="d-inline fs-4">Usuario <?php echo htmlspecialchars($_SESSION['logueado']); ?></p>
