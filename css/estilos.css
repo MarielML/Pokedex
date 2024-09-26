@@ -91,6 +91,15 @@ a {
   width: 30%;
 }
 
+.eliminar-imagen {
+  display: grid;
+  grid-template-columns: 1fr 10fr;
+}
+
+.eliminar-imagen label {
+  margin-left: 5px;
+}
+
 @media screen and (max-width: 730px) {
   nav {
     display: flex;

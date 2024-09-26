@@ -65,11 +65,13 @@ function modificar($conexion, $param1, $param2, $id)
         <label for="imagen">Imagen:</label><br><br>
         <input type="file" id="imagen" name="imagen"><br><br>
 
-        <label for="eliminarImagen">
+        <div class="eliminar-imagen">
             <input type="checkbox" id="eliminarImagen" name="eliminarImagen">
-            Eliminar imagen
-        </label><br><br>
-
+            <label for="eliminarImagen">
+                Eliminar imagen
+            </label>
+        </div>
+        <br>
         <button type="submit" class="w3-button w3-blue">Modificar</button><br><br>
     </form>
 
@@ -131,7 +133,7 @@ function modificar($conexion, $param1, $param2, $id)
                             $nombreImagenNuevo = $carpetaImagenes . $nombre . ".jpg";
                             rename($nombreImagenOriginal, $nombreImagenNuevo);
                         }
-                      
+
                         foreach ($pokemons as $pokemon) {
                             if ($pokemon["imagen"] === "Sin imagen") {
                                 $imagen = "Sin imagen";
@@ -144,7 +146,7 @@ function modificar($conexion, $param1, $param2, $id)
                         modificar($conexion, "nombre", $nombre, $id);
                         modificar($conexion, "tipo", $tipo, $id);
                         modificar($conexion, "descripcion", $descripcion, $id);
-			modificar($conexion, "imagen", $imagen, $id);
+                        modificar($conexion, "imagen", $imagen, $id);
                     }
                 }
             }
