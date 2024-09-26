@@ -43,9 +43,9 @@ require_once("BaseDeDatos/baseDeDatos.php");
                     </div>
                 <?php else: ?>
                     <form method="post" class="d-inline-flex">
-                        <label for="usuario"></label><input type="text" id="usuario" name="usuario" placeholder="Usuario"
+                        <input type="text" id="usuario" name="usuario" placeholder="Usuario"
                             class="form-control me-2" required>
-                        <label for="clave"></label><input type="password" id="clave" name="clave" required placeholder="Contraseña"
+                        <input type="password" id="clave" name="clave" required placeholder="Contraseña"
                             class="form-control me-2">
                         <button type="submit" class="btn btn-primary">Ingresar</button>
                     </form>
