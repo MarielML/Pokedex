@@ -35,7 +35,7 @@ require_once("BaseDeDatos/baseDeDatos.php");
             <!-- Sección de login o cierre de sesión alineado a la derecha -->
             <div class="col-6 text-end .ingreso">
                 <?php if (isset($_SESSION['logueado'])): ?>
-                    <div class="d-inline-block">
+                    <div class="d-inline-block logueado">
                         <p class="d-inline fs-4">Usuario <?php echo htmlspecialchars($_SESSION['logueado']); ?></p>
                         <a href="logout.php" class="ms-3">
                             <button class="btn btn-danger">Cerrar sesión</button>
