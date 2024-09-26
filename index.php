@@ -21,13 +21,13 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
 <main>
     <section>
         <form method="POST" class="buscador">
-            <label for="categorias"></label><select id="categorias" name="categorias">
+            <select id="categorias" name="categorias" class="border border-gray-400 p-2">
                 <option value="nombreTipoNumero">Nombre, tipo o número</option>
                 <option value="nombre">Nombre</option>
                 <option value="tipo">Tipo</option>
                 <option value="numero">Número</option>
             </select>
-            <label for="textoBuscado"></label><input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
+            <input class="border border-gray-400 p-2" placeholder="Ingresa el nombre, tipo o número de pokémon"
                 type="text" id="textoBuscado" name="textoBuscado" />
             <button class="border border-gray-400 p-2">
                 ¿Quién es este pokemon?

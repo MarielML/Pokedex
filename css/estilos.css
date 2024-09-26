@@ -22,16 +22,6 @@ p {
   margin: 0 1rem;
 }
 
-header {
-  padding: 10px 20px;
-}
-
-header nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 table {
   width: 80%;
   margin: 3rem auto;
@@ -67,7 +57,7 @@ table thead {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .agregar {
@@ -86,7 +76,9 @@ a {
 }
 
 @media screen and (max-width: 575px) {
-   .buscador input, .buscador select, .buscador button {
+  .buscador input,
+  .buscador select,
+  .buscador button {
     width: 100%;
   }
 }
