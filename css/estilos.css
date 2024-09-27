@@ -7,19 +7,25 @@ p {
 }
 
 .buscador {
-  width: 90%;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
   padding: 0 1rem;
-  font-size: 1.5rem;
-  margin-top: 2rem;
+  margin: 2rem auto;
+}
+
+.buscador input,
+.buscador select,
+.buscador button {
+  height: 50px;
+  margin: 10px 2px;
+  font-size: 1.3rem;
 }
 
 .buscador input {
   width: 50%;
-  margin: 0 1rem;
 }
 
 table {
@@ -100,7 +106,7 @@ a {
   margin-left: 5px;
 }
 
-@media screen and (max-width: 730px) {
+@media screen and (max-width: 800px) {
   nav {
     display: flex;
     flex-direction: column;
@@ -125,8 +131,12 @@ a {
   }
 
   .buscador {
-    width: 80%;
+    width: 90%;
     margin: 1rem auto;
+  }
+
+  .buscador form {
+    width: 100%;
   }
 
   .buscador input,
@@ -134,7 +144,7 @@ a {
   .buscador button {
     width: 100%;
     margin-bottom: 10px;
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   table {
@@ -168,5 +178,13 @@ a {
 
   .form-agregar a {
     width: 50%;
+  }
+}
+
+@media screen and (min-width: 800px) and (max-width: 900px) {
+  .buscador input,
+  .buscador select,
+  .buscador button {
+    font-size: 1rem;
   }
 }
