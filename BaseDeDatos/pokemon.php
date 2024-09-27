@@ -27,6 +27,7 @@ class pokemon
         $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $imagen);
         if ($stmt->execute()) {
             header('Location: index.php');
+            exit();
         } else {
             echo "Error: " . $stmt->error;
         }

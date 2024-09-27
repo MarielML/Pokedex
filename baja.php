@@ -7,3 +7,4 @@ $stmt = $conexion->prepare("DELETE FROM pokemon WHERE id = $id");
 $stmt->execute();
 
 header("Location: index.php");
+exit();

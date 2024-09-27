@@ -89,9 +89,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
                 $pokemons = $pokemon->obtenerTodosLosPokemons();
             }
             mostrarCuerpoDeTabla($pokemons);
-
             ?>
-
 
         </tbody>
     </table>

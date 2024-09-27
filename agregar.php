@@ -17,6 +17,11 @@ function agregar($conexion, $numero, $nombre, $tipo, $descripcion, $imagen)
         echo "Error: " . $stmt->error;
     }
 }
+
+if (!isset($_SESSION['logueado'])) {
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>
