@@ -21,7 +21,6 @@ function modificar($conexion, $param1, $param2, $id)
     $stmt->bind_param("ss", $param2, $id);
     if ($stmt->execute()) {
         header('Location: index.php');
-        exit();
     } else {
         echo "Error: " . $stmt->error;
     }
