@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos1.php");
 $carpetaImagenes = __DIR__ . '/imagenes/';
 function extractGetParameterOrDefault($param, $defaultValue = "")
 {

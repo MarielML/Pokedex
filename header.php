@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("BaseDeDatos/baseDeDatos.php");
+require_once("BaseDeDatos/baseDeDatos1.php");
 ?>
 
 <!DOCTYPE html>

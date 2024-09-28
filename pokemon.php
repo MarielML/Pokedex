@@ -1,5 +1,6 @@
 <?php
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos1.php");
+
 include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
 $id = $_GET['id'];
 $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE id LIKE ?");
