@@ -10,30 +10,28 @@ require_once("BaseDeDatos/baseDeDatos.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="./css/estilos.css">
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&amp;display=swap" rel="stylesheet" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/estilos.css">
 
     <title>Pokedex</title>
 </head>
 
 <body class="bg-gray-100 p-8">
     <header class="container py-3">
-        <nav class="row align-items-center">
-            <!-- Logo y título alineados a la izquierda -->
-            <div class="col-6 d-flex align-items-center">
-                <a href="index.php">
+        <nav class="nav row align-items-center">
+            <section class="contenedorizq col-6 d-flex align-items-center">
+                <a href="index.php" id="logo">
                     <img src="logo.jpg" alt="logo" class="img-fluid" style="width: 50px;">
                 </a>
-                <a href="index.php" class="ms-3">
+                <a href="index.php" class="ms-3" id="nombrelogo">
                     <h1 class="fs-2">Pokedex</h1>
                 </a>
-            </div>
+            </section>
 
-            <!-- Sección de login o cierre de sesión alineado a la derecha -->
-            <div class="col-6 text-end .ingreso">
+            <div class="col-6 text-end .ingreso" id="columna">
                 <?php if (isset($_SESSION['logueado'])): ?>
                     <div class="d-inline-block logueado">
                         <p class="d-inline fs-4">Usuario <?php echo htmlspecialchars($_SESSION['logueado']); ?></p>

@@ -188,3 +188,18 @@ a {
     font-size: 1rem;
   }
 }
+
+@media screen and (max-width: 600px){
+  #nombrelogo{
+    display: none;!important;
+  }
+  #columna{
+    display: flex;!important;
+    flex-direction: row;!important;
+  }
+  .nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}

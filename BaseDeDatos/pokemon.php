@@ -12,7 +12,6 @@ class pokemon
         $this->conexion=$this->database->getConexion();
     }
 
-
     public function obtenerTodosLosPokemons()
     {
         $stmt = $this->conexion->prepare("SELECT * FROM pokemon");
