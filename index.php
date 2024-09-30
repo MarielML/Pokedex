@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__ . "/fragments/helperTable.php");
-require_once(__DIR__ . "/BaseDeDatos/pokemon.php");
+require_once(__DIR__ . "/BaseDeDatos/Pokemon.php");
 
 function mostrarCuerpoDeTabla($pokemons)
 {
@@ -60,7 +60,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
         <tbody>
 
             <?php
-            $pokemon = new pokemon();
+            $pokemon = new Pokemon();
             if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 if (isset($_POST['categorias'])) {
                     $categoriaSeleccionada = $_POST['categorias'];
@@ -89,9 +89,7 @@ include $_SERVER['DOCUMENT_ROOT'] . "/Pokedex/header.php";
                 $pokemons = $pokemon->obtenerTodosLosPokemons();
             }
             mostrarCuerpoDeTabla($pokemons);
-
             ?>
-
 
         </tbody>
     </table>

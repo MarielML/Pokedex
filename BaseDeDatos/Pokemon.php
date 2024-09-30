@@ -1,15 +1,15 @@
 <?php
-require_once ("BaseDeDatos1.php");
-class pokemon
+require_once("BaseDeDatos.php");
+class Pokemon
 {
     private $conexion;
     private $database;
     private $config;
     public function __construct()
     {
-        $this->config=parse_ini_file("configlocal.ini");
-        $this->database=new BaseDeDatos($this->config);
-        $this->conexion=$this->database->getConexion();
+        $this->config = parse_ini_file("configlocal.ini");
+        $this->database = new BaseDeDatos($this->config);
+        $this->conexion = $this->database->getConexion();
     }
 
     public function obtenerTodosLosPokemons()
@@ -20,12 +20,13 @@ class pokemon
         return $resultado->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function insertPokemon($numero="", $nombre="", $tipo="", $descripcion="", $imagen="")
+    public function insertPokemon($numero = "", $nombre = "", $tipo = "", $descripcion = "", $imagen = "")
     {
         $stmt = $this->conexion->prepare("INSERT INTO pokemon (numero, nombre, tipo, descripcion, imagen) VALUES (?, ?, ?, ?, ?)");
         $stmt->bind_param("sssss", $numero, $nombre, $tipo, $descripcion, $imagen);
         if ($stmt->execute()) {
             header('Location: index.php');
+            exit();
         } else {
             echo "Error: " . $stmt->error;
         }
@@ -65,17 +66,15 @@ class pokemon
         $stmt->bind_param("s", $param);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
-
     }
 
-    public function obtenerCoincidenciasPor($categoriaObtenida,$textoBuscado)
+    public function obtenerCoincidenciasPor($categoriaObtenida, $textoBuscado)
     {
-        return $categoriaObtenida->obtenerCoinciencias($textoBuscado,$this);
+        return $categoriaObtenida->obtenerCoinciencias($textoBuscado, $this);
     }
 
     public function __destruct()
     {
         $this->conexion->close();
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/Pokedex/BaseDeDatos/baseDeDatos1.php");
 $carpetaImagenes = __DIR__ . '/imagenes/';
 $id = $_GET['id'];
 $stmt = $conexion->prepare("SELECT * FROM pokemon WHERE id LIKE ?");
@@ -26,6 +26,10 @@ function modificar($conexion, $param1, $param2, $id)
     }
 }
 
+if (!isset($_SESSION['logueado'])) {
+    header("Location: index.php");
+    exit();
+}
 ?>
 
 <!DOCTYPE html>

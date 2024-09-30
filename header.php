@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once("BaseDeDatos/baseDeDatos.php");
+require_once("BaseDeDatos/baseDeDatos1.php");
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +34,7 @@ require_once("BaseDeDatos/baseDeDatos.php");
             <div class="col-6 text-end .ingreso" id="columna">
                 <?php if (isset($_SESSION['logueado'])): ?>
                     <div class="d-inline-block logueado">
-                        <p class="d-inline fs-4">Usuario <?php echo htmlspecialchars($_SESSION['logueado']); ?></p>
+                        <p class="d-inline fs-4">Usuario <?php echo htmlspecialchars(string: $_SESSION['logueado']); ?></p>
                         <a href="logout.php" class="ms-3">
                             <button class="btn btn-danger">Cerrar sesión</button>
                         </a>
@@ -60,9 +60,10 @@ require_once("BaseDeDatos/baseDeDatos.php");
                         $usuario = $resultado->fetch_assoc();
 
                         if ($nombreUsuario !== "" && $clave !== "") {
-                            if ($usuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
+                            if ($usuario['usuario'] === $nombreUsuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
                                 $_SESSION['logueado'] = $nombreUsuario;
                                 header('Location: index.php');
+                                exit();
                             } else {
                                 echo "<p class='w3-text-red'>Usuario y/contraseña incorrectos</p>";
                             }

@@ -7,8 +7,8 @@ class BaseDeDatos
 
     public function __construct($config)
     {
-        $this->conexion=mysqli_connect($config["servername"],$config["username"],$config["password"],$config["dbname"]);
-        if(!$this->conexion){
+        $this->conexion = mysqli_connect($config["servername"], $config["username"], $config["password"], $config["dbname"]);
+        if (!$this->conexion) {
             die("la conexion fallo: " . mysqli_connect_error());
         }
     }
@@ -17,5 +17,4 @@ class BaseDeDatos
     {
         return $this->conexion;
     }
-
 }
