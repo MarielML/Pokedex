@@ -60,7 +60,7 @@ require_once("BaseDeDatos/baseDeDatos1.php");
                         $usuario = $resultado->fetch_assoc();
 
                         if ($nombreUsuario !== "" && $clave !== "") {
-                            if ($usuario['usuario'] === $nombreUsuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
+                            if ($usuario && $usuario['usuario'] === $nombreUsuario && password_verify($clave, password_hash($usuario['password'], PASSWORD_DEFAULT))) {
                                 $_SESSION['logueado'] = $nombreUsuario;
                                 header('Location: index.php');
                                 exit();
